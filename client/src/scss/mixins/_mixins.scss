@@ -1,0 +1,65 @@
+@import "../variables/variables";
+@mixin button-style{
+    background-color: $signatureColor;
+    color:#fff;
+    padding:.5rem 1rem;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 300ms ease;
+
+    &:hover{
+        background-color: $signatureColorLight;
+    }
+    &:active{
+        border:2px solid $signatureColor;
+        background-color: transparent;
+        color:$signatureColor;
+        padding:.4rem .8rem;
+    }
+}
+@mixin select-style{
+    
+        select {
+          appearance: none;
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          background: #fffafa;
+          border: 1px solid $signatureColor;
+          padding: 8px 20px;
+          font-size: 16px;
+          border-radius: 5px;
+          cursor: pointer;
+      
+          &:focus {
+            outline: none;
+          }
+        }
+      
+        &::before {
+          content: '';
+          font-family: FontAwesome;
+          position: absolute;
+          top: 50%;
+          right: 10px;
+          transform: translateY(-50%);
+          font-size: 14px;
+          color: #555;
+          pointer-events: none;
+        }
+      
+        /* Additional styling to customize appearance */
+        select {
+        //   width: 200px; /* Set a specific width */
+          color: #555; /* Text color */
+      
+          &:hover {
+            background: #e0e0e0; /* Hover background color */
+          }
+        }
+ 
+      
+}
+
+@mixin number-input{
+  
+}
