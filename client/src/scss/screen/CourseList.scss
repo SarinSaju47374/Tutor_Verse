@@ -1,0 +1,113 @@
+@import "../mixins/mixins.scss";
+.content{
+    .search-options{
+        width:  fit-content;
+        margin: auto;
+        display: flex;
+        gap:2rem;
+        @media (max-width:768px){
+            flex-direction: column;
+            gap:.5rem;
+            width: 80%;
+        }
+        .inp{
+            @include input-style;
+        }
+        .sel{
+            display: flex;
+            gap:0.5rem;
+        }
+    }
+    .course-list{
+        width:80%;
+        // min-height:60vh;
+        margin: 4rem auto;
+        @include grid-4;
+            .part2-card{
+                background-color: white;
+                border-radius:12px;
+                height: 15rem;
+                overflow: hidden;
+                .part2-card-img{
+                    overflow: hidden;
+                    height:12rem;
+                    img{
+                        width:100%;
+                        height: 100%;
+                        object-fit: cover;
+                        transition: all 300ms ease;
+                        &:hover{
+                            transform: scale(1.2);
+                        }
+                    }
+                }
+                .part2-para{
+                    .title{
+                        width: 80%;
+                        margin: auto;
+                        text-align: center;
+                        font-size: 14px;
+                        font-weight: 700;
+                    }
+                    p{  
+                        width: 80%;
+                        margin: 1rem auto;
+                        font-size: 12px;
+                        color:rgb(92, 86, 86);
+                        white-space: nowrap; /* Prevent text from wrapping */
+                        overflow: hidden; /* Hide any overflowed content */
+                        text-overflow: ellipsis;
+                        
+                    }
+                }
+            }
+    }
+    .course-pagination{
+        margin-bottom: 4rem;
+        ul{
+            margin: auto;
+            width: 90%;
+            display: flex;
+            justify-content: center;
+            gap:2rem;
+            li{
+                background-color: $signatureColor;
+                width:30px;
+                height:30px;
+                border-radius: 50%;
+                display: grid;
+                place-items: center;
+                text-align: center;
+                cursor:pointer;
+                transition: all 300ms ease;
+                &:first-child,&:last-child{
+                    background-color: transparent;
+                    a{
+                        font-weight: 700;
+                        color: $signatureColor;
+                    }
+                }
+                &:hover{
+                    
+                    transform: scale(1.2);
+                }
+                
+                a{
+                    color:white;
+                     
+                }
+            }
+            .selected{
+                background-color: rgb(108, 194, 230);
+            }
+            .break{
+                background-color: transparent;
+                a{
+                    font-weight: 800;
+                    color:$signatureColor;
+                }
+            }
+        }
+
+    }
+}

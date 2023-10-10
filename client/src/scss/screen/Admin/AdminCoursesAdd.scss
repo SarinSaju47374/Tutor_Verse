@@ -1,0 +1,111 @@
+@import "../../variables/variables.scss";
+.content-admin{
+    nav{
+        position: relative;
+        top:0;
+        left:0;
+    }
+    .info{
+        display: flex;
+        align-items: center;
+        margin-bottom:1rem;
+        gap:1rem;
+        button{
+            color:white;
+            background-color: grey;
+            padding:8px;
+            border-radius: 8px;
+            cursor:pointer;
+        }
+    }
+    .dataTable{
+        // .dataGrid{
+        //     background-color: rgb(255, 255, 255);
+        //     padding:20px;
+        //     // color:white;
+        //     .MuiDataGrid-toolbarContainer{
+        //         flex-direction: row-reverse;
+        //     }
+        // }
+        overflow-x: scroll;
+        overflow-y: scroll;
+        width:90%;
+    }
+    .modal{
+        position:absolute;
+        padding:20px;
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-50%);
+        width:30rem; 
+        height:35rem;
+        overflow-y:scroll;
+        // height: 30rem;
+        border-radius: 12px;;
+        background-color: rgb(88, 96, 143);
+        .fa-xmark{
+            right:15px;
+            top:8px;
+            cursor:pointer;
+            position:absolute;
+            font-size: 2rem;
+        }
+        form{
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            gap:2rem;
+            color:black;
+            p{
+                color:rgb(244, 244, 244);
+                font-size: 12px;
+            }
+            
+            .react-select__value-container,
+            .react-select__single-value {
+              color: black !important;
+            }
+            .inp-modal{
+                input{
+                    // height:80%;
+                    width:100%;
+                    color:black;
+                }
+                height:5rem;
+                &:nth-child(6){
+                    grid-column:span 2 ;
+                    textarea{
+                        min-width:100%;
+                        max-height:5rem;
+                    }
+                }
+                &:nth-child(5){
+                    grid-column:span 2 ;
+                     
+                }
+                &:nth-child(1),&:nth-child(2),&:nth-child(4){
+                     input{
+                        height:50%;
+                     }
+                }
+            }
+            .pre{
+                grid-column: span 2;
+                max-width: 100%;  
+                
+                img{
+                    margin:auto;
+                    width:20rem;
+                    height:11rem;
+                    object-fit: cover;
+                }
+            }
+            button{
+                background:gray;
+                padding:1rem;
+                border-radius: 12px;
+                color:white;
+                cursor: pointer;
+            }
+        }
+    }
+}

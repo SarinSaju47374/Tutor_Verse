@@ -17,49 +17,191 @@
         padding:.4rem .8rem;
     }
 }
-@mixin select-style{
-    
-        select {
-          appearance: none;
-          -webkit-appearance: none;
-          -moz-appearance: none;
-          background: #fffafa;
-          border: 1px solid $signatureColor;
-          padding: 8px 20px;
-          font-size: 16px;
-          border-radius: 5px;
-          cursor: pointer;
-      
-          &:focus {
-            outline: none;
-          }
-        }
-      
-        &::before {
-          content: '';
-          font-family: FontAwesome;
-          position: absolute;
-          top: 50%;
-          right: 10px;
-          transform: translateY(-50%);
-          font-size: 14px;
-          color: #555;
-          pointer-events: none;
-        }
-      
-        /* Additional styling to customize appearance */
-        select {
-        //   width: 200px; /* Set a specific width */
-          color: #555; /* Text color */
-      
-          &:hover {
-            background: #e0e0e0; /* Hover background color */
-          }
-        }
- 
-      
+@mixin link-style{
+    background-color: $signatureColor;
+    color:#fff;
+    padding:.5rem 1rem;
+     text-align: center;
+    border-radius: 6px;
+    transition: background-color 300ms ease;
+
+    &:hover{
+        background-color: $signatureColorLight;
+    }
+    &:active{
+        border:2px solid $signatureColor;
+        background-color: transparent;
+        color:$signatureColor;
+        padding:.4rem .8rem;
+    }
+}
+@mixin select-style1{
+  color: #41c6bf; // Set text color to your signature color
+  font-size: 16px; // Adjust font size as needed
+  border: 1px solid #41c6bf; // Set border color to your signature color
+  padding: 5px 16px; // Adjust padding as needed
+  border-radius: 8px; // Add border-radius for rounded corners
+  background-color: #fff; // Set background color
+  outline: none; // Remove default outline style
+  max-width: 100%; // Allow select to be responsive
+
+  @media screen and (max-width: 768px) {
+    font-size: 14px; // Adjust font size for smaller screens
+    padding: 6px 12px; // Adjust padding for smaller screens
+  }
+
+  &::-ms-expand {
+    display: none; // Hide arrow icon in IE
+  }
+
+  &:hover {
+    background-color: #f9f9f9; // Change background color on hover
+  }
+
+  &:focus {
+    border-color: #41c6bf; // Change border color on focus
+  }
 }
 
-@mixin number-input{
-  
+@mixin link-button{
+  color:white;
+  background-color: $signatureColor;
+  font-size: 12px;
+  width:8rem;
+  height: 2rem;
+  padding:.65rem .45rem;
+  border-radius: 8px;
+  transition: background-color  300ms ease;
+  &:active{
+    // padding:.45rem .0rem;
+    color:$signatureColor;
+    border: 1.8px solid $signatureColor;
+   
+    background-color: transparent;
+    // font-weight: 600;
+  }
+}
+
+
+@mixin part-head{
+  margin:2rem auto;
+  font-size: 2rem;
+  width:fit-content;
+  color:$signatureColor;
+  @media (max-width:768px){
+    text-align: center;
+  }
+}
+
+@mixin part-title{
+  margin:auto;
+  width: fit-content;
+  padding:0.3rem;
+  background-color: rgba(248, 217, 131, 0.644);
+  color:rgb(255, 166, 0);
+  @media (max-width:768px){
+    text-align: center;
+  }
+}
+
+@mixin grid-3{
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap:3rem;
+  @media (max-width: 768px) {
+      grid-template-columns: repeat(1,1fr);
+  }
+}
+@mixin grid-4{
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap:3rem;
+  @media (max-width: 768px) {
+      grid-template-columns: repeat(2,1fr);
+  }
+  @media (max-width: 500px) {
+      grid-template-columns: repeat(1,1fr);
+  }
+}
+
+@mixin input-style{
+  display: flex;
+  align-items: center;
+  border-radius: 12px;
+  background-color: #fff;
+  border:1px solid $signatureColor;
+  overflow: hidden;
+  justify-content:space-between ;
+   
+  @media (max-width:768px){
+    
+  }
+  input{
+    // padding:0rem 1rem;
+    border:none;
+    height:2rem;
+    margin-left: .5rem;
+    width:80%;
+    &:focus{
+      outline:none;
+    }
+  }
+  i{
+    height: 100%;
+    margin:0;
+    // font-size: 100%;
+    color:white;
+    background-color: $signatureColor;
+    width:20%;
+    padding:.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center ;
+  }
+}
+
+@mixin select-style{
+  color: #41c6bf; // Set text color to your signature color
+  font-size: 16px; // Adjust font size as needed
+  border: 2px solid #41c6bf; // Set border color to your signature color
+  padding: 8px 16px; // Adjust padding as needed
+  border-radius: 8px; // Add border-radius for rounded corners
+  background-color: #fff; // Set background color
+  outline: none; // Remove default outline style
+  max-width: 100%; // Allow select to be responsive
+
+  @media screen and (max-width: 768px) {
+    font-size: 14px; // Adjust font size for smaller screens
+    padding: 6px 12px; // Adjust padding for smaller screens
+  }
+
+  &::-ms-expand {
+    display: none; // Hide arrow icon in IE
+  }
+
+  &:hover {
+    background-color: #f9f9f9; // Change background color on hover
+  }
+
+  &:focus {
+    border-color: #41c6bf; // Change border color on focus
+  }
+}
+@mixin close-style{
+  position:absolute;
+  color:rgb(255, 255, 255);
+  right:30px;
+  font-size: 20px;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  transition: background-color 300ms ease;
+  z-index: 25;
+  cursor: pointer;
+  &:hover{
+      
+      background-color: rgba(238, 244, 244, 0.506);
+  }
 }

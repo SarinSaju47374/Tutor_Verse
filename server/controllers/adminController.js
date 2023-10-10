@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import createToken from "../utils/createToken.js";
 import { adminModel } from "../model/adminModel.js";
-
+        
 
 /**
  * @route   POST /api/login-admin
@@ -44,6 +44,35 @@ export async function loginAdmin(req, res) {
     } catch (err) {
         console.log(err);
         return res.status(500).send(err)
+    }
+
+}
+
+
+/**
+ * @route   GET /api/verify-admin
+ * @desc    verifies the admin
+ * @access  Private
+*/
+export async function verifyAdmin(req,res){
+    // Verify the token (assuming you have a function to do this)
+    try {
+        const tokenA = extractCookie(req,"tokenA") // Assuming you named your cookie 'tokenA'
+        if(tokenA){
+            const payload = decodeToken(tokenA,process.env.SECRET_KEY);
+            let tutor = await adminModel.findOne({_id:payload.tutorId})
+            if(tutor){
+                return res.send({success:"This is a valid user"})
+            }else{
+                return res.status(200).send({err:"The User Aint valid"})
+            }
+        }else{
+            return res.status(200).send({err:"The User Aint valid"})
+        }
+        
+    } catch (error) {
+       console.log(error)// Assuming 401 means unauthorized, adjust as needed
+       return  res.status(401); 
     }
 
 }

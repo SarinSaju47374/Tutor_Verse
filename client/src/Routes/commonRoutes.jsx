@@ -1,22 +1,22 @@
 import { Route } from "react-router-dom";
 
-import RegisterTutor from "../layouts/RegisterTutor";
-import RegisterStudent from "../layouts/RegisterStudent";
-import ForgotPage from "../layouts/ForgotPage";
-import ResetPassword from "../layouts/ResetPassword";
-import LoginAdmin from "../layouts/LoginAdmin";
-import LoginStudent from "../layouts/LoginStudent.jsx";
-import LoginTutor from "../layouts/LoginTutor.jsx";
+import RegisterTutor from "../screen/Tutor/RegisterTutor";  
+import RegisterStudent from "../screen/Student/RegisterStudent";
+import ForgotPage from "../screen/ForgotPage"
+import ResetPassword from "../screen/ResetPassword";
+import LoginAdmin from "../screen/Admin/LoginAdmin"
+import LoginStudent from "../screen/Student/LoginStudent" 
+import LoginTutor from "../screen/Tutor/LoginTutor";
 
 const commonRoutes = (
   <>
-    <Route path="/login/student" element={<LoginStudent />} />
-    <Route path="/register/student" element={<RegisterStudent />} />
+    <Route path="/student/login" element={<LoginStudent />} />
+    <Route path="/student/register" element={<RegisterStudent />} />
     <Route path="/forgot/:user" element={<ForgotPage />} />
     <Route path="/reset-psswd/:id/:tk/:user" element={<ResetPassword />} />
-    <Route path="/login/tutor" element={<LoginTutor />} />
-    <Route path="/register/tutor" element={<RegisterTutor />} />
-    <Route path="/login/admin" element={<LoginAdmin />} />
+    <Route path="/tutor/login" element={<LoginTutor />} />
+    <Route path="/tutor/register" element={<RegisterTutor />} />
+    <Route path="/admin/login" element={<LoginAdmin />} />
   </>
 );
 

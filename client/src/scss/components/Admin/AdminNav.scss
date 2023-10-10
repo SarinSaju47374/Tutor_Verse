@@ -1,0 +1,45 @@
+.admin-nav{
+    width:100%;
+    padding:20px;
+    display: flex;
+    justify-content: space-between;
+    .logo{
+        img{
+            height:2rem;
+        }
+    }
+    .icons{
+        display: flex;
+        gap:3rem;
+        .notifications{
+            position:relative;
+            display: flex;
+            align-items: center;
+            span{
+                position: absolute;
+                background-color: red;
+                width:17px;
+                height:17px;
+                border-radius: 50%;
+                 display:grid;
+                 place-items:center;
+                 font-size: 10px;
+                 font-weight: 700;
+                 right:-13px;
+                 top:-4px;
+
+            }
+        }
+        .user{
+            display: flex;
+            align-items: center;
+            gap:12px;
+            img{
+                width:26px;
+                height:26px;
+                border-radius: 50%;
+                object-fit: cover  ;
+            }
+        }
+    }
+}

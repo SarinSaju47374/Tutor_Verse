@@ -1,0 +1,205 @@
+@import "../../variables/variables.scss";
+@import "../../mixins/mixins.scss";
+
+.content{
+    width:100%;
+    .part1{
+        width: 80%;
+        margin:auto;
+        display: flex;
+        justify-content: space-between;
+        @media (max-width: 768px) {
+            flex-direction: column;
+            gap:1rem;
+        }
+        .part1-left{
+            h2{
+                color:$signatureColor;
+            }
+            p{
+
+                font-weight: 600;
+                color:rgb(70, 66, 66);
+            }
+            ul{
+                padding:0;
+                margin-bottom: 3rem;
+                li{
+                    font-size:0.85rem;
+                    margin: 1rem;
+                    i{
+                        color:$signatureColor
+                    }
+                }
+            }
+            .options{
+                display: flex;
+                @media (max-width:768px){
+                    flex-direction:column;
+                }
+                gap:1rem;
+                // flex-direction: column;
+                .option{
+                    display:flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap:0.5rem;
+                    a{
+                        @include link-button;
+                        display: flex;
+                        gap:1rem;
+                    }
+                }
+            }
+        }
+        .part1-right{
+            display: flex;
+            justify-content: center;
+            img{
+                border-radius: 20px;
+                width: 80%;
+                height:auto;
+                @media (max-width: 768px) {
+                    width: 100%;
+                }
+             
+            }
+        }
+    }
+    .part2{
+        margin:5rem auto;
+        width: 80%;
+        // margin:auto;
+        .part-title{
+            @include part-title
+        }
+        .part2-head{
+            @include part-head;
+        }
+        .part2-col{
+            @include grid-3;
+            .part2-card{
+                .part2-card-img{
+                    img{
+                        width:100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                }
+                .part2-para{
+                    .title{
+                        text-align: center;
+                    }
+                    p{
+                        color:rgb(43, 40, 40);
+                        font-size: 0.9rem;
+                        text-align: center;
+                    }
+                }
+            }
+        }
+    }
+    .part3{
+        width:100%;
+        margin-top:1rem ;
+        background-color: rgba(4, 196, 255, 0.164);
+        padding:2rem 0;
+        .part-title{
+            @include part-title
+        }
+        .part3-head{
+            @include part-head;
+        }
+        .part3-col{
+            width: 80%;
+            margin: auto;
+            
+            @include grid-4;
+            .part-card{
+                border-radius: 12px;;
+                overflow: hidden;
+                background-color: white;
+                // overflow: hidden;
+                .part-card-img{
+                    width: 100%;
+                    overflow: hidden;
+
+                    img{
+                        object-fit: cover;
+                        transition: all 300ms ease;
+                        &:hover{
+                            transform: scale(1.03);
+                        }
+                    }
+                }
+                .part-para{
+                    width:80%;
+                    margin: auto;
+                    .title{
+                        color:black;
+                        font-size: small;
+                        font-weight: 600;
+                    }
+                    p{
+                        font-size: 12px;
+                        color:rgb(92, 86, 86);
+                        width: 95%; /* Set a fixed width for the container */
+                        white-space: nowrap; /* Prevent text from wrapping */
+                        overflow: hidden; /* Hide any overflowed content */
+                        text-overflow: ellipsis;
+                    }
+                }
+            }
+        }
+    }
+    .part4{
+        margin-top:2rem;
+        .part-title{
+            @include part-title;
+        }
+        .part3-head{
+            @include part-head
+        }
+        .review{
+            border: 2px solid $signatureColor;
+            height: 10rem;
+            margin: 1rem;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            i{
+              position: absolute; 
+              font-size: 23px;
+              color: $signatureColor; 
+            }
+            .fa-quote-left{
+                top:-11px;
+                left:23px;
+            }
+            .fa-quote-right{
+                bottom:-11px;
+                right:23px;
+            }
+            .photo{
+                border-radius: 50%;
+                height:5rem;
+                width:5rem;
+                overflow: hidden;
+                img{
+                    width:100%;
+                    height:100%;
+                    object-fit: cover;
+                }
+            }
+            .para{
+                width:60%;
+                height: fit-content;
+                padding: 0;
+            }
+        }
+
+    }
+    
+}

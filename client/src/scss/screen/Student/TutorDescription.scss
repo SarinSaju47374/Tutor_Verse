@@ -1,0 +1,74 @@
+@import "../../mixins/mixins";
+
+.content{
+    .data{
+        // background-color: red;
+        height: 50vh;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap:3rem;
+        a{
+          @include link-style;
+        }
+        @media screen and (max-width:768px){
+            flex-direction: column;
+        }
+        img{
+            width:15rem;
+            height:15rem;
+            object-fit: cover;
+            border-radius:50%;
+        }
+        .details{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color:rgb(54, 27, 27);
+            gap:1rem;
+            
+            // border:2px solid white;
+            select{
+                @include select-style;
+            }
+            button{
+                @include button-style;
+            }
+        }
+         @keyframes pulsatingGlow {
+                0% {
+                  box-shadow: 0 0 0 0 $signatureColor;
+                }
+                100% {
+                  box-shadow: 0 0 0 1rem rgba(#ff5733, 0);
+                }
+              }
+              
+        .dett{
+            background-color: rgba(48, 198, 195, 0.559);
+            color:white;
+            font-weight: 100;
+            padding:1rem;
+            border-radius:12px;
+            height: fit-content;
+            letter-spacing: .2rem;
+            animation: pulsatingGlow 2s infinite;
+            @keyframes shakeAnimation {
+                0%, 100% {
+                  transform: translateX(0);
+                }
+                10%, 30%, 50%{
+                  transform: translateX(-5px);
+                }
+                20%, 40%, 60%, 80% {
+                  transform: translateX(5px);
+                }
+              }
+            span{
+                color:rgb(255, 255, 255);
+                display: inline-block;
+                animation: shakeAnimation 2s infinite;
+            }
+        }
+    }
+}

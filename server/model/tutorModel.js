@@ -16,32 +16,32 @@ const tutorSchema = new mongoose.Schema({
     },
     dob: { 
         type: Date, 
-        required: true 
+      
     },
     mob: { 
         type: String, 
-        required: true 
+     
     },
     gender: { 
         type: String, 
         enum: ['Male', 'Female', 'Other'], 
-        required: true 
+   
     },
     college: { 
         type: String, 
-        required: true 
+    
     },
     expYear: { 
         type: Number, 
-        required: true 
+   
     },
     addr: { 
         type: String, 
-        required: true 
+   
     },
     pinCode: { 
         type: Number, 
-        required: true 
+   
     },
     psswd: { 
         type: String, 
@@ -54,20 +54,30 @@ const tutorSchema = new mongoose.Schema({
         type: Boolean,
         default: false // Default to pending
     },
-    verified:{
-        type:Boolean,   //This is verified by the admin side after checking out the documents he submitted
-        default:false,
-    },
     isBlocked:{
         type:Boolean,
         default:false
     },
     profilePhoto:{
-        title:String,
-        filepath:String,
+        type:String
     },
+    schedule:[
+        {
+            courseId:{
+                type:mongoose.Schema.Types.ObjectId,
+                ref:'course'
+            },
+            slots:[
+                {
+                    value:String,
+                    label:String
+                }
+            ],
+            
+        }
+    ],
     documents: {
-        type: [{ title: String, filepath: String }],
+        type:[String]
     },
 })
 

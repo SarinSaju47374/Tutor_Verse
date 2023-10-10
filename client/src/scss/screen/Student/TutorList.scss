@@ -1,0 +1,63 @@
+@import "../../mixins/mixins.scss";
+
+.det{
+    margin-bottom: 1.5rem;
+    position: relative;
+    background-color: gray;
+    // height:rem;
+    
+    display: flex;
+    justify-content: space-between;
+    gap:4rem;
+    align-items: center;
+    padding: 5rem !important;
+    background-image: url('https://img.freepik.com/premium-photo/graffiti-wall_168892-2932.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    &:before{
+        content: "";
+        position: absolute;
+        background-color: rgba(26, 24, 24, 0.463);
+        top: 0;
+        left: 0;
+        z-index: 1;
+        height: 100%; // Make sure it covers the entire height of the parent
+        width: 100%; 
+
+    }
+    .info{
+        display: flex;
+        flex-direction: column;
+        gap: .5rem; 
+        color:white;
+        z-index: 19;
+        .breadCrumbs{
+            margin-top: 1rem;
+            display: flex;
+            gap:.5rem;
+            a{
+                color:white;
+                // padding: 1rem;
+                &:hover{
+                    color:rgb(200, 193, 193);
+                }
+            }
+            .active{
+                font-weight: 700;
+                pointer-events: none;
+            }
+        }
+        h3{
+            font-size:1.5rem;
+            letter-spacing: .5rem;
+        }
+        p{
+            margin-top: 1rem;
+            letter-spacing: .3rem;
+        }
+        button{
+            @include button-style;
+            margin:10px;
+        }
+    }
+}

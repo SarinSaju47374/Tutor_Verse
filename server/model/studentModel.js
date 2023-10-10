@@ -11,11 +11,11 @@ const studentSchema = new mongoose.Schema({
     },
     gName: { 
         type: String, 
-        required: true 
+       
     },
     relation: { 
         type: String, 
-        required: true 
+     
     },
     email: { 
         type: String, 
@@ -24,7 +24,7 @@ const studentSchema = new mongoose.Schema({
     },
     dob: { 
         type: Date, 
-        required: true 
+    
     },
     mob: { 
         type: String, 
@@ -37,22 +37,22 @@ const studentSchema = new mongoose.Schema({
     },
     school: { 
         type: String, 
-        required: true 
+      
     },
     board: { 
         type: String, 
-        required: true 
+        
     },
     grade:{
         type:Number,
     },
     addr: { 
         type: String, 
-        required: true 
+     
     },
     pinCode: { 
         type: Number, 
-        required: true 
+      
     },
     isBlocked:{
         type:Boolean,
