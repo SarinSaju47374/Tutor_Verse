@@ -34,6 +34,29 @@
             button{
                 @include button-style;
             }
+            
+        }
+        .refer{
+          display: flex;
+          gap:1rem;
+          align-items: center;
+        }
+        .slotPreview{
+          margin-top: 1rem;
+          display: flex;
+          gap:1rem;
+          color:rgb(255, 255, 255);
+          font-weight: 600;
+          .tile-slot{
+            padding:12px;
+            border-radius: 12px;
+          }
+          .red{
+            background-color: rgba(255, 145, 0, 0.853);
+           }
+           .blue{
+            background-color: rgba(35, 201, 187, 0.849);
+           }
         }
          @keyframes pulsatingGlow {
                 0% {
@@ -45,7 +68,7 @@
               }
               
         .dett{
-            background-color: rgba(48, 198, 195, 0.559);
+            background-color: rgba(88, 93, 93, 0.559);
             color:white;
             font-weight: 100;
             padding:1rem;
@@ -69,6 +92,29 @@
                 display: inline-block;
                 animation: shakeAnimation 2s infinite;
             }
-        }
+          }
+          .booked{
+            background-color: rgb(103, 154, 158);
+            padding: 20px;
+            color:rgb(255, 255, 255);
+            font-weight: 700;
+            letter-spacing: 1rem;
+            cursor:pointer;
+          }
+          @keyframes shake {
+            0%, 100% {
+              transform: translateX(0);
+            }
+            10%, 30%, 50%, 70%, 90% {
+              transform: translateX(-10px);
+            }
+            20%, 40%, 60%, 80% {
+              transform: translateX(10px);
+            }
+          }
+          
+          .shake {
+            animation: shake 0.5s;
+          }
     }
 }

@@ -1,4 +1,6 @@
 import { tutorModel } from "../model/tutorModel.js";
+import chatRoomModel from "../model/chatRoomModel.js"
+import messageModel from "../model/messageModel.js";
 import tutorSlotModel from "../model/tutorSlotModel.js";
 import bcrypt from "bcrypt";
 import createToken from "../utils/createToken.js";
@@ -419,7 +421,7 @@ export async function tutorDocUpload(req,res){
          req.files.forEach((file,index) => {
             const oldPath = `uploads/${file.filename}`;
             const newPath = `uploads/${tutor.fName} ${index}.pdf`;
-            urls.push(`${process.env.BASE_URL_S}/${newPath}`)
+            urls.push(`${process.env.SERVER_URL}/${newPath}`)
             fs.rename(oldPath, newPath, (err) => {
               if (err) throw err;
               console.log(`Renamed ${oldPath} to ${newPath}`);
@@ -445,3 +447,33 @@ export async function tutorDocUpload(req,res){
     }
 
 }
+
+
+
+/**
+ * @route   GET /api/load-chatrooms-tutor
+ * @desc    loads the chat rooms associated to specific tutors
+ * @access  Private
+ */
+export async function loadChatRoomsTutor(req, res) {
+    try {
+        let {id} = req.payload; //Taking Data from the Token 
+        if(!id) res.status(400).send({"err":"Invalid user"})
+        let rooms = await chatRoomModel.find({tutorId:id})
+                        .populate({
+                            path:'studentId',
+                            select:'fName lName'
+                        })
+                        .populate({
+                            path:'courseId',
+                            select:'courseName image board'
+                        })
+        
+        res.status(200).send(rooms)
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+

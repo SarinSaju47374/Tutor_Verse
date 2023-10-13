@@ -1,0 +1,39 @@
+@import "../../mixins/mixins.scss";
+.content-fail{
+    position:relative;
+    margin-top:3rem;
+    background-color: red;
+    min-height:70vh;
+    background-image:url("https://cdn.dribbble.com/users/107759/screenshots/4594246/15_payment-error.gif");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:0;
+    &:before{
+        content:"";
+        position:absolute;
+        width:100%;
+        top:0;
+        bottom:0;
+        background-color: rgba(5, 5, 5, 0.419);
+    }
+    .data{
+        z-index: 22;
+        color:white;
+        font-size: 4rem;
+        display: flex;
+        flex-direction: column;
+        gap:4rem;
+        align-items: center;
+        a{
+            @include button-style;
+            text-align: center;
+            width:50%;
+            border-radius: 1rem;;
+            font-size: 2rem;
+        }
+    }
+}

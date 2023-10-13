@@ -4,9 +4,9 @@ import { useSelector } from "react-redux"
 import axios from "../../axios"
 import { useState } from "react"
 import TutorNavbar from '../Tutor/TutorNavbar';
-import Footer from '../Student/Footer';
+ 
 
-const TutorPrivateRoutes = () => {
+const TutorPrivateChat = () => {
   let data = useSelector(state => state.tutor.user?.id);
   const location = useLocation();
   // const [tutor, setTutor] = useState(""); 
@@ -46,11 +46,11 @@ const TutorPrivateRoutes = () => {
     <>
       <TutorNavbar loggedIn={true} />
       <Outlet />
-      <Footer />
+     
     </>
   );
 
   
 };
 
-export default TutorPrivateRoutes;        
+export default TutorPrivateChat;        

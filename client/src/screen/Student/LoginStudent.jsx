@@ -6,7 +6,7 @@ import { useFormik } from "formik";
 import { Dna } from "react-loader-spinner"
 import axios from "../../axios";
 import { useDispatch } from "react-redux";
-import { loginStudent,logoutStudent } from "../../toolkit/slices/student/studentSlice.js"
+import { loginStudent,logoutStudent,changeStatus } from "../../toolkit/slices/student/studentSlice.js"
 import { toast } from "react-toastify";
 
 
@@ -25,6 +25,7 @@ function LoginStudent() {
     async function reset(){
       await axios.get("/reset-session")
       dispatch(logoutStudent())
+      dispatch(changeStatus(false));
     }
     reset();
   }, [])

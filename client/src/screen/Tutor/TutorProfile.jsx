@@ -129,6 +129,7 @@ function TutorProfile({loggedIn}) {
   }
  
   useEffect(()=>{
+    console.log("Asdfa")
      courseId = localStorage.getItem("courseTempId");
      formik2.setValues({
       ...formik2.values,

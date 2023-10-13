@@ -1,6 +1,7 @@
 import {Router} from "express";
  
 import * as tutorController from "../controllers/tutorController.js"
+import * as messageController from "../controllers/messageController.js"
 import { tutorAuth } from "../middleware/authMiddleware.js";
 const router = Router();
 import multer from "multer"
@@ -25,6 +26,11 @@ router.route("/view-slots").get(tutorAuth, tutorController.viewSlots);
 
 router.route("/slot-delete").delete(tutorAuth, tutorController.slotDelete);
 
+router.route("/load-chatrooms-tutor").get(tutorAuth,tutorController.loadChatRoomsTutor);
+
+router.route("/add-messageT").post(tutorAuth,messageController.AddMessage);
+
+router.route("/load-messagesT").get(tutorAuth,messageController.loadMessages);
 
 //Public
 router.route("/register-tutor").post(tutorController.registerTutorDetails)

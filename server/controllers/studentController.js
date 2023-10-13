@@ -2,13 +2,17 @@ import { studentModel } from "../model/studentModel.js";
 import bcrypt from "bcrypt";
 import createToken from "../utils/createToken.js";
 import tutorSlotModel from "../model/tutorSlotModel.js";
-import mongoose from "mongoose";
+import bookingModel from "../model/bookingModel.js"
+import mongoose, { startSession } from "mongoose";
 import extractCookie from "../utils/extractCookie.js";
 import decodeToken from "../utils/decodeToken.js";
-// import uuid from "uuid"
 import stripe from "stripe";
-const stripeInstance = stripe(process.env.STRIPE_SECRET);
-
+import coursePrice from "../utils/coursePrice.js";
+import getStartAndEndDate from "../utils/getStartAndEndDate.js";
+import checkStudentSlot from "../utils/checkStudentSlot.js";
+import chatRoomModel from "../model/chatRoomModel.js";
+const stripeInstance = stripe('sk_test_51NzYcqSD2MaFS36ji6B9AT4rtWiYHoLJSK7pm1P6t74VUF024O9P3TX45HOVm7E0GBC85IuxsUd3LsmZnYFHz7pX00Vy34qUQg');
+const { ObjectId } = mongoose.Types;
 
 /**
  * @route   POST /api/register-student
@@ -252,34 +256,143 @@ export async function viewTutorDet(req, res) {
  * @desc    view specific tutor details with slots associated to that course 
  * @access  Public
  */
-// export async function payment(req, res) {
-//     try {
-//         const {id,email} = req.payload;
-//         const {data} = req.body;
-//         const idempontencyKey = uuid();
-//         return stripeInstance.customers.create({
-//             email:email,
-//             source:id,
-//         }).then(customer=>{
-//             stripe.charges.create({
-//                 amount: data.price *100,
-//                 currency: "inr",
-//                 customer: customer.id,
-//                 receipt_email:"sanjuag99@gmail.com",
-//                 desc:data.name,
-//                 shipping:{
-//                     name:"asdflk",
-//                     address:{
-//                         country:"hjocd"
-//                     }
-//                 }
-//             },{idempontencyKey})
-//         }).then(result=>res.status(200).json(result))
-//         .catch(err=>console.log(err))
+export async function paymentCheckout(req, res) {
+    try {
+        const {id,email} = req.payload;
+        const {price,courseName,tutorId,slot} = req.body;
+        let status = await checkStudentSlot(id,slot)
+        if(status) return res.status(200).send({err:"You have already booked a course at this Time Slot"})
+        const session = await stripeInstance.checkout.sessions.create({
+            payment_method_types:['card'],
+            mode: 'payment',
+            line_items:[
+            {
+                price_data:{
+                    currency:'inr',
+                    product_data:{
+                        name:courseName,
+                    },
+                    unit_amount:price*100
+                },
+                quantity:1,
+            }
+            ],
+            customer_email:email,
+            success_url: `${process.env.CLIENT_URL}/success`,
+            cancel_url: `${process.env.CLIENT_URL}/fail`,
+        });
+        
+       
+        
+        res.status(200).send({url:session.url,sId:session.id})
 
-//     } catch (err) {
-//         console.error(err);
-//         return res.status(500).json({ error: 'Internal Server Error' });
-//     }
-// }
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+/**
+ * @route   GET /api/booking
+ * @desc    student Books a SLOT
+ * @access  Private
+ */
+export async function booking(req, res) {
+    try {
+        let {id} = req.payload; //Taking Data from the Token 
+        let {courseId,tutorId,slot,sid} = req.body;
+        const sessionDetails = await stripeInstance.checkout.sessions.retrieve(sid);
+        if(sessionDetails.payment_status==='unpaid') return res.status(200).send({success:false})
+        let course = await coursePrice(courseId)
+        const {start,end} = getStartAndEndDate(course.duration);
+        
+        if(id && courseId && tutorId && Object.keys(slot).length){
+            await bookingModel.create({
+                courseId:courseId,
+                tutorId:tutorId,
+                studentId:id,
+                slot,
+                startDate:start,
+                endDate:end,
+                pricePaid:course.price
+            })
+            await chatRoomModel.create({
+                courseId:courseId,
+                tutorId:tutorId,
+                studentId:id,
+            })
+        }
+        res.status(200).send({success:true})
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+/**
+ * @route   POST /api/tutor-slot-availability
+ * @desc    student Books a SLOT
+ * @access  Private
+ */
+export async function tutorSlotsBooked(req, res) {
+    try {
+        
+        let {tutorId} = req.body;
+        let data = await bookingModel.find({tutorId,completed:false}); 
+        let slots = data.map(booking=>booking.slot)
+        res.status(200).send({slots:slots})
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+/**
+ * @route   POST /api/check-booking
+ * @desc    Checks whether the use has booked the tutor with that course or not
+ * @access  Private
+ */
+export async function checkBooking(req, res) {
+    try {
+        let {id} = req.payload; //student id from the middleware
+        if(!id) return res.status(200).send({err:"Invalid Id"})
+        let {tutorId,courseId} = req.body;
+        let data = await bookingModel.find({courseId,tutorId,studentId:id});
+        if(data.length>0){
+            res.status(200).send({booked:true});
+        }else{
+            res.status(200).send({booked:false});
+        }
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+/**
+ * @route   GET /api/load-chatrooms-student
+ * @desc    loads the chat rooms associated to specific students
+ * @access  Private
+ */
+export async function loadChatRoomsStudent(req, res) {
+    try {
+        let {id} = req.payload; //Taking Data from the Token 
+        if(!id) res.status(400).send({"err":"Invalid user"})
+        let rooms = await chatRoomModel.find({studentId:id})
+                        .populate({
+                            path:'tutorId',
+                            select:'fName lName profilePhoto'
+                        })
+                        .populate({
+                            path:'courseId',
+                            select:'courseName image board'
+                        })
+        res.status(200).send(rooms)
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
 

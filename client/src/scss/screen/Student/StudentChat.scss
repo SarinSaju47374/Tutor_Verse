@@ -1,0 +1,208 @@
+@import "../../mixins/mixins.scss";
+@import "../../variables/variables.scss";
+.chat-content {
+    background-color: rgba(0, 0, 0, 0.726);
+    height: 92vh;
+    margin-top: 3rem;
+    padding: 12px;
+    display: grid;
+    grid-template-columns: repeat(12,1fr);
+    grid-template-rows: repeat(12,1fr); 
+    gap:1rem;
+
+    .users {
+        position: relative;
+        background-color: rgba(35, 39, 51, 0.992);;
+        border-radius: 12px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        gap:0;
+        // overflow-y: scroll;
+        grid-row: span 12;
+        grid-column:span 3;
+        .search {
+            position: absolute;
+            top:0;
+            height: 3rem;
+            left:0;
+            right:0;
+            // display: flex;
+            .search-bar{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: $signatureColor;
+                width: 100%;
+                height: 100%;
+                gap:1rem;padding:5px;
+                input{
+                    width:80%;
+                    height: 80%;
+                    &:focus{
+                        outline:none;
+                        border:none;
+                    }
+                }
+                i{
+                    color:white;
+                     
+                }
+                // background-color: red;
+            }
+        }
+        
+        .names {
+            padding:12px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: scroll;
+            height: 100%;
+            min-width:100%;
+            margin-top: 3rem;
+            gap: 1rem;
+            
+            .user {
+                // background-color: rgba(0, 128, 0, 0.459);
+                padding: 5px;
+                height: 3.4rem;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                gap:1rem;
+                cursor: pointer;
+                img{
+                    width:3rem;
+                    height:3rem;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+                .details{
+                    .name{
+                        font-size: 15px;
+                        font-weight: 600;
+                        color:$signatureColor;
+                    }
+                    .mssg{
+                        color:white;
+                        font-size: 12px;
+                        width: 200px; /* Set the width of the container */
+                        white-space: nowrap; /* Prevent text wrapping */
+                        overflow: hidden; /* Hide overflowing content */
+                        text-overflow: ellipsis; /* Display ellipsis (...) for overflowed text */
+                    }
+                }
+            }
+        }
+    }
+    
+    .chat {
+        background-color: rgba(103, 101, 101, 0.992);
+        border-radius: 12px;
+        grid-column: span 9;
+        grid-row:span 11;
+        overflow: hidden;
+        .chat-data{
+            background-color: rgba(103, 101, 101, 0.992);
+            // padding: 12px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            overflow-y: scroll;
+            .choose-room{
+                color:white;
+                font-weight: 700;
+                font-size: 2rem;
+                margin:auto;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                img{
+                    width: 10rem;
+                    height: 5rem;
+                    object-fit: contain;
+                    border-radius: 0;
+                }
+            }
+            img{ 
+                width:2rem;
+                height:2rem;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+            .mssg-spec{
+                // position: relative;
+                padding: 1rem;
+                // background-color: aliceblue;
+                // width:100%;
+              
+                .sender{
+                    display: flex;
+                    flex-direction: row-reverse;
+                    gap:1rem;
+                    .mssg-data{
+                        background-color: rgb(91, 146, 142);
+                        color:white;
+                        max-width:80%;
+                        word-wrap: break-word;
+                        width: fit-content;
+                        padding:12px;
+                        // right:12px
+                        margin-left: auto;
+                        top:0;
+                        border-radius: 12px 0px 12px 12px;
+                    }
+                }
+                .reciever{
+                    display: flex;
+                    flex-direction: row;
+                    gap:1rem;
+                    .mssg-data{
+                        background-color: rgb(51, 74, 88);
+                        color:white;
+                        max-width:80%;
+                        word-wrap: break-word;
+                        width: fit-content;
+                        padding:12px;
+                        // right:12px
+                        margin-right: auto;
+                        top:0;
+                        border-radius: 0px 12px 12px 12px;
+                    }
+                }
+            }
+        }
+    }
+    
+    .chat-input {
+        background-color: white;
+        border-radius:8px;
+        grid-row:span 1;
+        grid-column: span 9;
+        display: flex;
+        height:3rem;
+        align-items: center;
+        justify-content: space-around;
+        i{
+            cursor:pointer
+        }
+        textarea{
+            height: 90%;;
+            width:70%;
+            border:none;
+            &:focus{
+                outline:none;
+            
+            }
+        }
+        button{
+            background-color: $signatureColor;
+            padding:12px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+        // Add your styles for the chat input here.
+    }
+} 
+ 

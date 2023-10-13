@@ -87,7 +87,7 @@ export async function forgotPsswd(req,res){
             let student = await studentModel.findOne({email});
             if (!student) return res.send({"err":"No such mail registered"})
             let token = jwt.sign({id:student._id,user},process.env.SECRET_KEY_URL,{expiresIn:"500s"});
-            let link = `${process.env.BASE_URL}/reset-psswd/${student._id}/${token}/${user}`
+            let link = `${process.env.CLIENT_URL}/reset-psswd/${student._id}/${token}/${user}`
             let message = `Click this link to reset your Password :- ${link}` 
             await sendMail(email,"Reset Password",message)
             return res.status(200).send("Email sent")
@@ -95,7 +95,7 @@ export async function forgotPsswd(req,res){
             let tutor = await tutorModel.findOne({email});
             if (!tutor) return res.send({"err":"No such mail registered"})
             let token = jwt.sign({id:tutor._id,user},process.env.SECRET_KEY_URL,{expiresIn:"500s"});
-            let link = `${process.env.BASE_URL}/reset-psswd/${tutor._id}/${token}/${user}`
+            let link = `${process.env.CLIENT_URL}/reset-psswd/${tutor._id}/${token}/${user}`
             let message = `Click this link to reset your Password :- ${link}` 
             await sendMail(email,"Reset Password",message)
             return res.status(200).send("Email sent")

@@ -1,12 +1,20 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
+import http from "http"
 import morgan from 'morgan';
 import connect from './database/conn.js';
 import cors from 'cors';
 import cloudinaryConfig from "./cloudinary/cloudinary.js"
- 
+import {Server} from "socket.io";
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server,{
+    cors:{
+        origin:"*"
+    }
+})
+
 const port = 3000;
 
 // Routes
@@ -29,75 +37,28 @@ app.use("/api", studentRouter);
 app.use("/api", tutorRouter);
 app.use("/api", commonRouter);
 app.use("/api",courseRouter);
-app.post("/api/test-submit",async (req,res)=>{
-    const cloudinary = cloudinaryConfig(); // Initialize cloudinary
-    try {
-        const { image } = req.body;
-        let uploadedImage = await cloudinary.uploader.upload(image, {
-            upload_preset: 'verse_upload',
-            public_id: `${req.body.courseName}Course`,
-            allowed_formats: ['png', 'jpeg', 'jpg']
-        });
-        console.log(uploadedImage);
-        res.status(200).send(uploadedImage);
-    } catch (err) {
-        console.log('Err: ', err);
-        res.status(500).send(err.message);
-    }
-     
+
+io.on("connection",(socket)=>{
+    console.log("We are connected!")
+
+    socket.on('joinRoom', (roomId) => {
+        socket.join(roomId);
+    });
+
+    socket.on('sendMessage', (roomId, message) => {
+        console.log("Check Amigo!🚚🚚🚚🚚🚚",message)
+        io.to(roomId).emit('message', message);
+    });
+
+    socket.on("disconnect",()=>{
+        console.log("We are disconnected")
+    })
 })
 
 
-
-// //PRACTICE
-// import aws from 'aws-sdk';
-// import multer from 'multer';
-// import multerS3 from 'multer-s3'
-
-// aws.config.update({
-//     secretAccessKey:process.env.ACCESS_KEY,
-//     accessKeyId:process.env.ACCESS_SECRET,
-//     region:process.env.REGION
-// })
-// const BUCKET = process.env.BUCKET
-// const s3 = new aws.S3();
-// const upload= multer({
-//     storage:multerS3({
-//         bucket:BUCKET,
-//         s3:s3,
-//         acl:"public-read", //Acess control list :- making it publicly available
-//         key:(req,file,cb)=>{
-//             cb(null,file.originalname)
-//         }    
-//     })
-// })
-
-// app.post("/upload",upload.single("file"),(req,res)=>{
-//     console.log(req.file)
-//     res.send("Successfully uploaded "+req.file.location+" location")
-// })
-
-// app.get("/list",async (req,res)=>{
-//     let r = await s3.listObjectsV2({bucket:BUCKET}).promise();
-//     let x = r.Contents.map(item=>item.Key)
-//     res.send(x)
-// })
-
-// app.get("/download/:filename",async(req,res)=>{
-//     const filename = req.params.filename;
-//     let x = await s3.getObject({bucket:BUCKET,Key:filename}).promise()
-//     res.send(x.Body);
-// })
-
-// app.get("/delete/:filename",async(req,res)=>{
-//     const filename = req.params.filename;
-//     let x = await s3.deleteObject({bucket:BUCKET,Key:filename}).promise()
-//     res.send("File deleted successfully!");
-// })
-
 connect().then(() => {
     try {
-        app.listen(port, () => {
+        server.listen(port, () => {
             console.log(`The server is running at port number ${port} `)
         })
     } catch (err) {

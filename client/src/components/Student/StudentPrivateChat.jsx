@@ -6,7 +6,9 @@ import { useState } from "react"
 import Navbar from "../../components/Student/Navbar"
 import Footer from '../Student/Footer';
 import {logoutStudent,changeStatus} from "../../toolkit/slices/student/studentSlice.js"
-const StudentPrivateRoutes = () => {
+
+const StudentPrivateChat = () => {
+ 
   let data = useSelector(state => state.student.user?.id);
   const location = useLocation();
   const [ready, setReady] = useState(false);
@@ -18,8 +20,6 @@ const StudentPrivateRoutes = () => {
         let response = await axios.get("/verify-studentv2");
         if (response.data.err) {
           setLoggedIn(false);
-          dispatch(changeStatus(false));
-          dispatch(logoutStudent());
           // navigate("/student/login")
         } else {
           // setReady(true)
@@ -52,9 +52,8 @@ const StudentPrivateRoutes = () => {
     <>
       <Navbar loggedIn={loggedIn} />
       <Outlet />
-      <Footer />
     </>
   );
 };
 
-export default StudentPrivateRoutes;        
+export default StudentPrivateChat;        
