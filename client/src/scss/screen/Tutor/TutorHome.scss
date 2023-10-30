@@ -1,0 +1,52 @@
+@import "../../mixins/mixins";
+@import "../../variables/variables.scss";
+
+.TutorHome{
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+    // background-color: red;
+    display: grid;
+    grid-template-columns: repeat(2,20rem);
+    height: 50vh;
+    justify-content: center;
+    align-items: center;
+    gap:3rem;
+    .card{
+        position: relative;
+        background-color: yellowgreen;
+        height: 10rem;
+        width: 20rem;
+        border-radius: 12px;
+        overflow: hidden;
+        display: grid;
+        place-items: center;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        &:before{
+            content:"";
+            position: absolute;
+            width:100%;
+            height: 100%;
+            background-color:rgba(46, 208, 168, 0.353);
+            z-index:12;
+            backdrop-filter: blur(4px);
+        }
+        h2{
+            z-index:22;
+            color:rgb(54, 43, 43);
+        }
+    }
+    .card-1{
+        background-image: url("https://img.freepik.com/premium-vector/student-woman-with-laptop-studying-online-course-online-education-concept-vector-illustration-flat_186332-1147.jpg");  
+    }
+    .card-2{
+        background-image: url("https://blogassets.leverageedu.com/blog/wp-content/uploads/2019/11/23173248/Career-Objective-for-Teacher.jpg");  
+    }
+    .card-3{
+        background-image: url("https://static.vecteezy.com/system/resources/previews/006/828/181/non_2x/flat-illustration-of-two-chat-bubble-intersect-each-other-suitable-for-online-chat-message-service-logo-group-discussion-forum-and-social-media-chat-bubble-icon-free-vector.jpg");  
+    }
+    .card-4{
+        background-image: url("https://img.freepik.com/free-vector/blogging-illustration-concept_114360-851.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1697068800&semt=ais");  
+    }
+}

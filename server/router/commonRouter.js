@@ -14,6 +14,7 @@ router.route("/reset-psswd/:id/:tk/:user").post(commonController.resetPsswd)
 
 router.route("/verify-otp").post(commonController.verifyOtp)
 
+router.route("/view-spec-blog").get(commonController.viewSpecBlog)
 
 
 

@@ -11,6 +11,7 @@ import coursePrice from "../utils/coursePrice.js";
 import getStartAndEndDate from "../utils/getStartAndEndDate.js";
 import checkStudentSlot from "../utils/checkStudentSlot.js";
 import chatRoomModel from "../model/chatRoomModel.js";
+import getWeekdays  from "../utils/getWeekDays.js";
 const stripeInstance = stripe('sk_test_51NzYcqSD2MaFS36ji6B9AT4rtWiYHoLJSK7pm1P6t74VUF024O9P3TX45HOVm7E0GBC85IuxsUd3LsmZnYFHz7pX00Vy34qUQg');
 const { ObjectId } = mongoose.Types;
 
@@ -121,9 +122,9 @@ export async function loginStudent(req, res) {
 
             const cookieOptions = {
                 httpOnly: true,
-                secure: true,
+                secure: false,
                 expires: expiration,
-                domain: 'localhost',
+                domain: process.env.CLIENT_DOMAIN,
                 path: "/",
             };
 
@@ -304,7 +305,7 @@ export async function booking(req, res) {
         if(sessionDetails.payment_status==='unpaid') return res.status(200).send({success:false})
         let course = await coursePrice(courseId)
         const {start,end} = getStartAndEndDate(course.duration);
-        
+        let days = getWeekdays(start,end);
         if(id && courseId && tutorId && Object.keys(slot).length){
             await bookingModel.create({
                 courseId:courseId,
@@ -313,6 +314,7 @@ export async function booking(req, res) {
                 slot,
                 startDate:start,
                 endDate:end,
+                classCount:days,
                 pricePaid:course.price
             })
             await chatRoomModel.create({
@@ -390,6 +392,55 @@ export async function loadChatRoomsStudent(req, res) {
                         })
         res.status(200).send(rooms)
 
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+/**
+ * @route   GET /api/load-bookings
+ * @desc    loads the bookiing details of specific student 
+ * @access  Private
+ */
+export async function loadBookingList(req, res) {
+    try {
+        let {id} = req.payload; //Taking Data from the Token 
+        if(!id) res.status(400).send({"err":"Invalid user"})
+        let bookings = await bookingModel.find({studentId:id})
+                        .sort({ createdAt: -1 })
+                        .populate({
+                            path:'tutorId',
+                            select:'fName lName'
+                        })
+                        .populate({
+                            path:'courseId',
+                            select:'courseName board price'
+                        })
+        res.status(200).send(bookings)
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+/**
+ * @route   GET /api/cancel-bookings   🤓🤓🤓🤓🤓
+ * @desc    cancels the Booking
+ * @access  Private
+ */
+export async function cancelBooking(req, res) {
+    try {
+        let {id} = req.payload; //Taking Data from the Token 
+        if(!id) res.status(400).send({"err":"Invalid user"})
+        let bookings = await bookingModel.find({studentId:id})
+                        .populate({
+                            path:'tutorId',
+                            select:'fName lName'
+                        })
+                        .populate({
+                            path:'courseId',
+                            select:'courseName board price'
+                        })
+        res.status(200).send(bookings)
     } catch (err) {
         console.error(err);
         return res.status(500).json({ error: 'Internal Server Error' });

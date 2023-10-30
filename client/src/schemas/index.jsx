@@ -319,3 +319,10 @@ export const tutorSlotSchema = Yup.object({
         .min(1,"Choose atleast 1 timeslot amigo")
         .required(),
 })
+
+export const blogSchema = Yup.object({
+    title: Yup.string().required('Title is required'),
+  content: Yup.string().required('Content is required'),
+  category: Yup.string().required('Category is required'),
+  imageUrl: Yup.string().required('Image is required'),
+})

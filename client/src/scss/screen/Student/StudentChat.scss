@@ -152,6 +152,9 @@
                         margin-left: auto;
                         top:0;
                         border-radius: 12px 0px 12px 12px;
+                        button{
+                            @include button-style;
+                        }
                     }
                 }
                 .reciever{
@@ -169,6 +172,9 @@
                         margin-right: auto;
                         top:0;
                         border-radius: 0px 12px 12px 12px;
+                        button{
+                            @include button-style;
+                        }
                     }
                 }
             }

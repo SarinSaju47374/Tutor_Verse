@@ -60,9 +60,12 @@ function Navbar({loggedIn}) {
                      
                 </div> */}
             </li>
-            <li><Link >Blogs</Link></li>
+            <li><Link to="/blogs">Blogs</Link></li>
             {
               loggedIn?<li><Link >Profile</Link></li>:null
+            }
+            {
+              loggedIn?<li><Link to="/chat">Chats</Link></li>:null
             }
             
             {
@@ -79,7 +82,7 @@ function Navbar({loggedIn}) {
         </ul>
       </div>
       {loggedIn?
-        <button className={styles.admission}><i className="fa-solid fa-list-ul"></i>  Check Your Bookings</button> : 
+        <Link to="/bookings" className={styles.admission}><i className="fa-solid fa-list-ul"></i>  Check Your Bookings</Link> : 
         <Link to="/student/register" className={styles.admission}>Admission</Link>
         
       }
@@ -89,12 +92,6 @@ function Navbar({loggedIn}) {
                 <li><Link >Home</Link></li>
                 <li onClick={handleSublist}><Link >Courses</Link><button>{showlist ? <i className="fa-solid fa-caret-up"></i> : <i className="fa-solid fa-caret-down"></i>}</button>
                 </li>
-                <ul className={styles.sublist} style={{display:showlist?"block":"none"}}>
-                    <li><Link >Course 1</Link></li>
-                    <li><Link >Course 2</Link></li>
-                    <li><Link >Course 3</Link></li>
-                    <li><Link >Course 4</Link></li>
-                </ul>
                 <li><Link >Blogs</Link></li>
                 {loggedIn?
                     <li><Link to="/student/login">Logout</Link></li>
@@ -110,7 +107,7 @@ function Navbar({loggedIn}) {
                 }
                 {
                     loggedIn?
-                    <li><Link >Check Bookings</Link></li>
+                    <li><Link to="/bookings">Check Bookings</Link></li>
                     :
                     null
                 }

@@ -2,6 +2,7 @@ import {Router} from "express";
  
 import * as tutorController from "../controllers/tutorController.js"
 import * as messageController from "../controllers/messageController.js"
+import * as commonController from "../controllers/commonController.js"
 import { tutorAuth } from "../middleware/authMiddleware.js";
 const router = Router();
 import multer from "multer"
@@ -32,6 +33,12 @@ router.route("/add-messageT").post(tutorAuth,messageController.AddMessage);
 
 router.route("/load-messagesT").get(tutorAuth,messageController.loadMessages);
 
+router.route("/add-blog").post(tutorAuth,tutorController.addBlog);
+
+router.route("/update-blog").post(tutorAuth,tutorController.updateBlog);
+
+router.route("/delete-blog").delete(tutorAuth,tutorController.deleteBlog);
+
 //Public
 router.route("/register-tutor").post(tutorController.registerTutorDetails)
 
@@ -40,6 +47,9 @@ router.route("/tutor-mail-check").post(tutorController.tutorMailExists)
 router.route("/login-tutor").post(tutorController.loginTutor);
 
 router.route("/verify-tutor").get(tutorController.verifyTutor);
+
+router.route("/view-blog").get(commonController.viewBlog);
+
 
 
 

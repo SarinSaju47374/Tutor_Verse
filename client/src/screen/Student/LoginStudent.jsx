@@ -78,7 +78,7 @@ function LoginStudent() {
           <div className="login-form">
             <div className="frm">
               <form action="" className="frm-bs" onSubmit={handleSubmit}>
-                <h2> Student Login</h2>
+                <h2> Student Login HI</h2>
                 <p>Welcome back! Login to your account</p>
                 <div className="inp-kit">
                   <label htmlFor="email">Email Address</label>
@@ -125,7 +125,7 @@ function LoginStudent() {
                 <Link to="/tutor/login">Login as a Tutor</Link>
                 <Link to="/forgot/student" >Forgot password ?</Link>
               </div>
-              <button type="submit">Sign In</button>
+              <button type="submit" >Sign In</button>
               </form> 
             </div>
           </div>

@@ -1,15 +1,11 @@
-import Box from '@mui/material/Box';
-import { useRef, useState, useEffect, useMemo } from "react";
-import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import { useRef, useState, useEffect } from "react";
 import "../../scss/screen/Admin/AdminCoursesAdd.scss";
 import Select from 'react-select';
 import { useFormik } from "formik";
 import { courseAddSchema } from '../../schemas';
 import axios from "../../axios";
-import makeAnimated from 'react-select/animated';
-import { ToastContainer, toast } from "react-toastify";
-// import DataTable from "react-data-table-component";
 import DataTable from '../../components/Admin/DataTable';
+
 const options1 = [
   { value: 1, label: 'Class 1' },
   { value: 2, label: 'Class 2' },
@@ -23,6 +19,7 @@ const options1 = [
   { value: 11, label: 'Class 11' },
   { value: 12, label: 'Class 12' },
 ];
+
 const options2 = [
   { value: 'CBSE', label: 'CBSE' },
   { value: 'Kerala Board', label: 'Kerala Board' },
@@ -31,106 +28,11 @@ const options2 = [
 ];
 
 
-const rows = [
-  { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-  { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-];
-
-const options = [
-  { value: '15:00', label: '3pm' },
-  { value: '16:00', label: '4pm' },
-  { value: '17:00', label: '5pm' },
-  { value: '18:00', label: '6pm' },
-  { value: '19:00', label: '7pm' },
-  { value: '20:00', label: '8pm' },
-  { value: '21:00', label: '9pm' },
-]
-const column = [
-  {
-    name: "Sl. No.",
-    selector: (row, index) => index + 1,
-    sortable: true,
-  },
-  {
-    name: "Name",
-    selector: (row) => row.userName,
-    sortable: true,
-  },
-  {
-    name: "Email",
-    selector: (row) => row.email,
-    sortable: true,
-  },
-  {
-    name: "Business Name",
-    selector: (row) => row.businessName,
-    sortable: true,
-  },
-  {
-    name: "Address",
-    selector: (row) => row.address,
-  },
-  {
-    name: "Phone Number",
-    selector: (row) => row.phoneNumber,
-  },
-  {
-    name: "Access",
-    selector: (row) => row.access,
-  },
-];
-// const columns = [
-//   {
-//     name: 'ID',
-//     selector: 'id',
-//     sortable: true,
-//   },
-//   {
-//     name: 'Name',
-//     selector: 'name',
-//     sortable: true,
-//   },
-//   {
-//     name: 'Age',
-//     selector: 'age',
-//     sortable: true,
-//   },
-//   {
-//     name: 'City',
-//     selector: 'city',
-//     sortable: true,
-//   },
-// ];
-//  const data = [
-//     { id: 1, name: 'John Doe', age: 30, city: 'New York' },
-//     { id: 2, name: 'JjhfdSmith', age: 25, city: 'Los Angeles' },
-//     { id: 2, name: 'Jadfghth', age: 25, city: 'Los Angeles' },
-//     { id: 2, name: 'sgsdSmith', age: 25, city: 'Los Angeles' },
-//     { id: 2, name: 'Jane Smith', age: 25, city: 'Los Angeles' },
-//     { id: 2, name: 'Jaasdfmith', age: 25, city: 'Los Angeles' },
-//     { id: 2, name: 'Jane Smith', age: 25, city: 'Los Angeles' },
-//     { id: 2, name: 'Jaasdf', age: 25, city: 'Los Angeles' },
-//     { id: 2, name: 'Jane Smith', age: 25, city: 'Los Angeles' },
-//     { id: 2, name: 'Jane Smith', age: 25, city: 'Los Angeles' },
-//     { id: 2, name: 'Jane Smith', age: 25, city: 'Los Angeles' },
-//     { id: 2, name: 'Jgmmith', age: 25, city: 'Los Angeles' },
-//     { id: 2, name: 'Janxcvbith', age: 25, city: 'Los Angeles' },
-//     // Add more dummy rows as needed
-//   ];
 function AdminCourseAdd() {
   const [open, showOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const fileInputRef = useRef();
   const [img, setImage] = useState({});
-  const [records, setRecords] = useState([]);
-  const [selectedSlots, setSelectedSlots] = useState([]);
   const [submitting, setSubmitting] = useState(false)
   const [data, setData] = useState({})
   const [modified,setModified] = useState(false)
@@ -150,6 +52,7 @@ function AdminCourseAdd() {
   // const [isHidden,setisHidden] = useState(false) 
 
   const [hiddenRows, setHiddenRows] = useState([]);
+
   useEffect(() => {
     console.log("Bazinga")
     async function getCourses() {
@@ -164,7 +67,8 @@ function AdminCourseAdd() {
     getCourses();
     // toast.success("Adaasdf")
   }, [modified])
-  console.log("😀😀😀😀😀😀😀", data)
+  
+ 
 
   const initialValues = {
     courseName: "",
@@ -221,6 +125,7 @@ function AdminCourseAdd() {
       accessor: 'actions'
     },
   ]
+
   const { values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue } = useFormik({
     initialValues: initialValues,
     validationSchema: courseAddSchema,
@@ -258,10 +163,8 @@ function AdminCourseAdd() {
   };
 
   const handleFileChange = (event) => {
-
     handleChange(event);
     const selectedFile = event.target.files[0];
- 
     console.log(selectedFile)
     if (selectedFile) {
       console.log("Im in");
@@ -281,6 +184,7 @@ function AdminCourseAdd() {
     }
 
   };
+
   const handleOpen = () => {
     showOpen(!open);
   }
@@ -345,6 +249,7 @@ function AdminCourseAdd() {
   ];
   // console.log(hiddenRows)
   console.log("initialvalues 2 after: ",initialValues2)
+
   const formik2 = useFormik({
     initialValues: modData || {},
     validationSchema: courseAddSchema,
@@ -375,11 +280,12 @@ function AdminCourseAdd() {
 
     }
   })
+
   const handleOpenMod = () => {
     setOpenMod(!openMod);
   }
 
-  const animatedComponents = makeAnimated();
+
   return (
     <div className="content-admin">
 
@@ -387,43 +293,22 @@ function AdminCourseAdd() {
         <h1>Courses</h1>
         <button onClick={handleOpen}>Add New Course</button>
       </div>
+
       <div className="dataTable">
 
         {Object.keys(data).length === 0 ? "No Data Added" : <DataTable columns={columns} data={data} actions={courseActions} hiddenRows={hiddenRows}/>}
-        {/* <Box sx={{ height: 400, width: '100%' }}>
-          <DataGrid
-            className="dataGrid"
-            rows={rows}
-            columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 5,
-                },
-              },
-            }}
-            slots={{ toolbar: GridToolbar }}
-            slotProps={{
-              toolbar: {
-                showQuickFilter: true,
-                quickFilterProps: { debounceMs: 800 }
-              }
-            }}
-            pageSizeOptions={[5]}
-            checkboxSelection
-            disableRowSelectionOnClick
-            disableColumnFilter
-            disableDensitySelector
-            disableColumnSelector
-          />
-        </Box> */}
+       
       </div>
+
       {open &&
         <div className="modal">
+          
           <i onClick={handleOpen} className="fa-solid fa-xmark"></i>
+
           <div className="info">
             Add Course
           </div>
+
           <form onSubmit={handleSubmit}>
             <div className="inp-modal">
               <input type="text"
@@ -447,39 +332,7 @@ function AdminCourseAdd() {
               />
               {errors.price && touched.price ? <p>{errors.price}</p> : null}
             </div>
-            {/* <div className="inp-modal">
-            <Select
-                closeMenuOnSelect={false}
-                components={animatedComponents}
-          
-                isMulti
-                options={options}
-                value={values.selectedSlots}
-                onChange={(selectedOption) => {
-                    setFieldValue('selectedSlots', selectedOption );
-                 
-                }}
-                styles={{
-                  multiValue: (provided) => ({
-                    ...provided,
-                    display: 'inline-grid',
-               
-                    // Occupies the row
-                    // margin: '2px', // Adds some spacing between values
-                  }),
-                  multiValueLabel: (provided) => ({
-                    ...provided,
-                    whiteSpace: 'nowrap', // Prevents the label from breaking into a new line
-                  }),
-                  multiValueRemove: (provided) => ({
-                    ...provided,
-                    cursor: 'pointer',
-                  }),
-                }}
-              />
-              {errors.selectedSlots  ? <p>{errors.selectedSlots}</p>:null}
-            </div> */}
-
+  
             <div className="inp-modal">
               <Select
                 // defaultValue={selectedOption}
@@ -557,6 +410,7 @@ function AdminCourseAdd() {
 
         </div>
       }
+
       {openMod &&
         <div className="modal">
           <i onClick={handleOpenMod} className="fa-solid fa-xmark"></i>
@@ -711,6 +565,7 @@ function AdminCourseAdd() {
 
         </div>
       }
+
     </div>
   )
 }

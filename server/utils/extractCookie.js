@@ -2,7 +2,8 @@ import jwt from "jsonwebtoken";
 
 export default function  extractCookie(req,tokenName) {
   const token = req.headers.authorization || getTokenFromCookies(req,tokenName);
-
+ console.log(req.headers.authorization)
+ console.log(getTokenFromCookies(req,tokenName))
   if (!token) {
     return false;
   }else{

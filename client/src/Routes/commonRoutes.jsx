@@ -7,7 +7,7 @@ import ResetPassword from "../screen/ResetPassword";
 import LoginAdmin from "../screen/Admin/LoginAdmin"
 import LoginStudent from "../screen/Student/LoginStudent" 
 import LoginTutor from "../screen/Tutor/LoginTutor";
-
+import Room from "../screen/Room";
 const commonRoutes = (
   <>
     <Route path="/student/login" element={<LoginStudent />} />
@@ -17,6 +17,7 @@ const commonRoutes = (
     <Route path="/tutor/login" element={<LoginTutor />} />
     <Route path="/tutor/register" element={<RegisterTutor />} />
     <Route path="/admin/login" element={<LoginAdmin />} />
+    <Route path="/room/:roomID" element={<Room />} />
   </>
 );
 

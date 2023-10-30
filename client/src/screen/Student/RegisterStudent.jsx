@@ -58,7 +58,6 @@ function RegisterStudent() {
             console.log(values.email)
            await axios.post('/send-otp',{
                 email:values.email
-            
            })
         //    return
         }

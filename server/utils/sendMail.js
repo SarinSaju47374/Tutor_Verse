@@ -5,8 +5,8 @@ export default async function sendMail(mailId,subject,message){
         host: 'smtp.ethereal.email',
         port: 587,
         auth: {
-            user: 'dexter.blick74@ethereal.email',
-            pass: 'zddwY7VqpzFqW9ESYd'
+            user: 'london.gutkowski33@ethereal.email',
+            pass: 'FPYUyaJzE1baBNBKXk'
         }
     });
 

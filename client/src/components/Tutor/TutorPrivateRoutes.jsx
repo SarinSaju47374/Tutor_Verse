@@ -19,6 +19,7 @@ const TutorPrivateRoutes = () => {
         let response = await axios.get("/verify-tutor");
         console.log(location.pathname)
         if (response.data.err) {
+          console.log("😂😂😂",response.data.err)
           navigate("/tutor/login")
         } else {
           // setReady(true)
@@ -26,10 +27,12 @@ const TutorPrivateRoutes = () => {
             console.log()
             setReady(true)
           }else{
+
+            console.log("😂",response.data)
             navigate("/tutor/login")
           }
           console.log("redux state: ",data) 
-          console.log("Respnse: ",response.data.info.id) 
+          console.log("Response: ",response.data.info.id) 
         }
       } catch (error) {
         console.error("Error verifying tutor:", error);

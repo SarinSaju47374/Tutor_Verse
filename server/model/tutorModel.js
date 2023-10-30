@@ -45,7 +45,8 @@ const tutorSchema = new mongoose.Schema({
     },
     psswd: { 
         type: String, 
-        required: true 
+        required: true,
+            
     },
     termsAccepted:{
         type:Boolean

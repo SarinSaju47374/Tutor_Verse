@@ -15,6 +15,7 @@ import decodeToken from "../utils/decodeToken.js";
 import slotAvailability from "../utils/slotAvailability.js";
 import slotAvailabilityV2 from "../utils/slotAvailabilityV2.js";
 import fs from 'fs';
+import blogModel from "../model/blogModel.js";
 
 
 /**
@@ -104,11 +105,15 @@ export async function loginTutor(req, res) {
             id:tutor._id,
             fName:tutor.fName,
             lName:tutor.lName,
+            profile:tutor.profilePhoto,
             email:tutor.email,
             schedule:tutor.schedule,
         }
         bcrypt.compare(psswd, tutor.psswd, async function (err, result) {
-            if (err) res.send(500).send(err)
+            if (err) {
+                console.log(err)
+                return res.status(500).send(err)
+            }
 
             if (!result) {
                 return res.send({"err":"Password doesnt match"})
@@ -119,13 +124,19 @@ export async function loginTutor(req, res) {
             const expiration = new Date(Date.now() + 24 * 60 * 60 * 1000);      
             const cookieOptions = {
                 httpOnly: true,
-                secure:true,
+                secure:false,
                 expires: expiration,
-                domain:'localhost', 
+                domain:process.env.CLIENT_DOMAIN, 
                 path:"/",
             };
             
-            res.cookie('tokenA', response, cookieOptions);
+            try {
+                res.cookie('tokenA', response, cookieOptions);
+                console.log('Cookie set successfully');
+              } catch (error) {
+                console.error('Error setting cookie:', error);
+              }
+            console.log(response)
             return res.status(200).send({data:data,message:"You have logged in Successfuly"})
         });
 
@@ -289,7 +300,6 @@ export async function viewSlots(req, res) {
 export async function verifyTutor(req,res){
     // Verify the token (assuming you have a function to do this)
     try {
-      
         const tokenA = extractCookie(req,"tokenA") // Assuming you named your cookie 'tokenA'
         if(tokenA){
             const payload = decodeToken(tokenA,process.env.SECRET_KEY);
@@ -471,6 +481,75 @@ export async function loadChatRoomsTutor(req, res) {
         
         res.status(200).send(rooms)
 
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+/**
+ * @route   GET /api/add-blog
+ * @desc    saves the blog created by DB 
+ * @access  Private
+ */
+export async function addBlog(req, res) {
+    try {
+        let {id} = req.payload; //Taking Data from the Token
+        let {title,content,category,imageUrl} = req.body;
+        if(!id) res.status(400).send({"err":"Invalid user"})
+         let data = await blogModel.create({
+            title:title,
+            author:id,
+            content:content,
+            category:category,
+            image:imageUrl
+        })
+        
+        res.status(200).send({success:"The Blog Has been Successfully Published"})
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+/**
+ * @route   GET /api/update-blog
+ * @desc    updates the blog created by DB 
+ * @access  Private
+ */
+export async function updateBlog(req, res) {
+    try {
+        let {id} = req.payload; //Taking Data from the Token
+        let {title,content,category,imageUrl,bid} = req.body;
+        if(!id) res.status(400).send({"err":"Invalid user"})
+         let data = await blogModel.updateOne({_id:bid},{
+            title:title,
+            author:id,
+            content:content,
+            category:category,
+            image:imageUrl
+        })
+        
+        res.status(200).send({success:"The Blog Has been Successfully Published"})
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+/**
+ * @route   DELETE /api/delete-blog
+ * @desc    deletes the blog created by tutor 
+ * @access  Private
+ */
+export async function deleteBlog(req, res) {
+    try {
+        let {bid} = req.query;
+        let response = await blogModel.deleteOne({_id:bid})
+        if(!response) return res.status(500).send("Something went wrong");
+        return res.status(200).send({success:true,mssg:"The Blog is Deleted successfully"});
     } catch (err) {
         console.error(err);
         return res.status(500).json({ error: 'Internal Server Error' });

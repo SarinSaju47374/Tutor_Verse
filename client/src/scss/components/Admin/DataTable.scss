@@ -1,5 +1,32 @@
 @import "../../variables/variables.scss";
 .dataTable{
+    .modal-student-dataTable{
+        background-color: rgba(44, 40, 40, 0.595);
+        position: fixed;
+        left:0;
+        right:0;
+        top:0;
+        bottom:0;
+        display: grid;
+        place-items:center;
+        i{
+            cursor: pointer;
+            font-size: 2rem;
+            position: absolute;
+            right:10%;
+            top:10%;
+        }
+        .modal-view-bookings-admin{
+            background-color:gainsboro;
+            color:black;
+            width:50%;
+            height: fit-content;
+            padding: 20px;
+            border-radius: 12px;
+            z-index: 100;
+        }
+    }
+    
     table {
         font-family: Arial, Helvetica, sans-serif;
         border-collapse: collapse;
@@ -37,7 +64,6 @@
                 &:nth-child(1){
                     text-wrap: wrap;
                     width: 20px;
-                  
                 }
                 button{
                    cursor: pointer; 

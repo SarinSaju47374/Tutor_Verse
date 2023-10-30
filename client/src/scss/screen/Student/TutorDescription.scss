@@ -1,9 +1,8 @@
 @import "../../mixins/mixins";
 
 .content{
+    margin-bottom:5rem ;
     .data{
-        // background-color: red;
-        height: 50vh;
         padding: 20px;
         display: flex;
         align-items: center;
@@ -12,7 +11,9 @@
           @include link-style;
         }
         @media screen and (max-width:768px){
+          position: relative;
             flex-direction: column;
+            
         }
         img{
             width:15rem;
@@ -68,8 +69,9 @@
               }
               
         .dett{
-            background-color: rgba(88, 93, 93, 0.559);
-            color:white;
+            // background-color: rgba(19, 194, 194, 0.493);
+            border : 2px solid rgba(19, 194, 194, 0.493);
+            color:rgb(19, 194, 194);
             font-weight: 100;
             padding:1rem;
             border-radius:12px;
@@ -88,7 +90,7 @@
                 }
               }
             span{
-                color:rgb(255, 255, 255);
+                color:rgb(15, 201, 201);;
                 display: inline-block;
                 animation: shakeAnimation 2s infinite;
             }

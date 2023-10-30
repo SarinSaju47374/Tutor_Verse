@@ -5,13 +5,20 @@ import { loginSchema } from "../../schemas"
 import { useFormik } from "formik"
 import { Dna } from "react-loader-spinner"
 import {ToastContainer,toast} from "react-toastify";
-import axios from "../../axios"
+import { useDispatch } from "react-redux";
+import axios from "../../axios";
+import {loginAdmin, logoutAdmin} from "../../toolkit/slices/admin/adminSlice.js"
+
+
 function LoginAdmin() {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   
   useEffect(() => {
+    dispatch(logoutAdmin())
     const loadingTimeout = setTimeout(() => {
       setLoading(false);
       return () => {
@@ -36,9 +43,11 @@ function LoginAdmin() {
       if(response.data.err){
         toast.error(response.data.err)
       }else{
-        toast.success(response.data)
+        toast.success(response.data.message);
+        console.log(response.data.data)
+        dispatch(loginAdmin(response.data.data)) 
         setTimeout(()=>{
-          navigate("/")
+          navigate("/admin/dashboard")
         },1000)
       }
     }
@@ -118,8 +127,7 @@ function LoginAdmin() {
               </form>
             </div>
           </div>
-          <div className="login-img" style={{ backgroundImage: "url('images/admin.jpg')" }}>
-
+          <div className="login-img" style={{ backgroundImage: "url('/images/admin.jpg')" }}>
           </div>
         </div>
       }

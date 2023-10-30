@@ -35,6 +35,8 @@ router.route("/add-messageS").post(studentAuth,messageController.AddMessage);
 
 router.route("/load-messagesS").get(studentAuth,messageController.loadMessages);
 
+router.route("/load-bookings").get(studentAuth,studentController.loadBookingList);
+
      
  
  

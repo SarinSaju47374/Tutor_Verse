@@ -1,6 +1,7 @@
 import { studentModel } from "../model/studentModel.js";
 import { tutorModel } from "../model/tutorModel.js";
 import otpModel from "../model/otpModel.js";
+import blogModel from "../model/blogModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -66,7 +67,7 @@ export function reset(req,res){
         httpOnly: true,
         expires: new Date(0),
         secure: isSecure, // Set 'Secure' attribute only for HTTPS
-        domain:'localhost',
+        domain:process.env.CLIENT_DOMAIN,
         path:"/"
     };
     
@@ -138,3 +139,81 @@ export async function resetPsswd(req,res){
      }
 
 }
+
+
+/**
+ * @route   get /api/view-blog
+ * @desc    Gets you the blog list
+ * @access  Public
+*/
+export async function viewBlog(req, res) {
+    try {
+      const { searchQuery, page = 1, perPage = 10,id,bid,nid} = req.query;
+      console.log(nid);
+      let query;
+     if(id){
+        query = {author:id}
+     }
+     else if(bid){
+      query = {_id:bid}
+     }
+     else if(nid){
+      query = {_id:{ $ne: nid }}
+     }
+     else{
+        query:{}
+     }
+      
+  
+      if (searchQuery) {
+        query.$or = [
+            { title: { $regex: searchQuery, $options: 'i' } },
+            { content: { $regex: searchQuery, $options: 'i' } },
+            { category: { $regex: searchQuery, $options: 'i' } }
+          ]
+    ;
+      }
+      
+      const totalBlogs = await blogModel.countDocuments(query);
+  
+      let blogs = await blogModel
+        .find(query)
+        .sort({ updatedAt: -1 })
+        .populate({
+          path: 'author',
+          select: 'fName lName profilePhoto',
+        })
+        .skip((page - 1) * perPage)
+        .limit(perPage);
+  
+      blogs = blogs.filter(blog => blog.author !== null);
+  
+      res.send({
+        totalBlogs,
+        currentPage: page,
+        totalPages: Math.ceil(totalBlogs / perPage),
+        blogs
+      });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).send({ err: true });
+    }
+  }
+  
+/**
+ * @route   get /api/view-spec-blog
+ * @desc    View specific blog 
+ * @access  Public
+*/
+export async function viewSpecBlog(req, res) {
+    try {
+       const {bid} = req.query;
+       let data = await blogModel.findOne({_id:bid}).populate(`author`,`fName lName email profilePhoto`)
+       if(!data) res.status(400).send("Something went Wrong")
+       res.status(200).send(data);
+    } catch (err) {
+      console.error(err);
+      return res.status(500).send({ err: true });
+    }
+  }
+  

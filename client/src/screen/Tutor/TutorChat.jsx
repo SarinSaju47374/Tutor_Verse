@@ -15,6 +15,7 @@ const TutorChat = () => {
   const [socket, setSocket] = useState(null); 
   const [chatRooms,setChatRooms] = useState([]);
   let tutorId = useSelector(state => state.tutor.user?.id);
+  let profile = useSelector(state => state.tutor.user?.profile);
   useEffect(() => {
     const newSocket = io(ENDPOINT, { transports: ['websocket'] });
     setSocket(newSocket);
@@ -69,7 +70,7 @@ const TutorChat = () => {
   return (
     <div className="chat-content">
       <SideBarTut chatRooms={chatRooms} setCurrentRoom={setCurrentRoom} socket={socket}/>
-      <MainMessages messages={messages} id = {tutorId} currentRoom={currentRoom}/>
+      <MainMessages messages={messages} id = {tutorId} currentRoom={currentRoom} profile={profile}/>
       <InputComponentTutor currentRoomId = {currentRoom?._id} socket={socket} id={tutorId}/>
     </div> 
 )};

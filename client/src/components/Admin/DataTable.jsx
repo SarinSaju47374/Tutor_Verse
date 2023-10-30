@@ -7,8 +7,7 @@ function DataTable({ columns, data, actions ,hiddenRows,modified}) {
         columns = useMemo(() => columns, [])
         data =data.courses
     }
-    
-    // const pageRef = useRef(1);
+
     //Creating a table Instance
     const {
         getTableProps,
@@ -102,7 +101,7 @@ function DataTable({ columns, data, actions ,hiddenRows,modified}) {
                                                             row.original.isHidden? 'yes':no
                                                         }:null
                                                     } */}
-                                                     {/* Render content based on column ID */}
+                                                    {/* Render content based on column ID */}
                                                     {/*🧐🧐🧐🧐🧐*/}
                                                     {cell.column.id === 'isHidden' && (row.original.isHidden ? 'yes' : 'no')}
                                                     {cell.column.id === 'actions' ? (

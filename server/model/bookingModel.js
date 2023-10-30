@@ -22,6 +22,20 @@ const bookingSchema = new mongoose.Schema({
          label:String
       }
      },
+     cancellationRequest: {
+         requestedByStudent: {
+            type: Boolean,
+            default: false,
+         },
+         approvedByAdmin: {
+            type: Boolean,
+            default: false,
+         },
+         cancellationStatus: {
+            type: String,
+            default: "pending", // Default status is "pending"
+         }
+      },
      startDate:{
         type:Date,
         required:true
@@ -31,6 +45,10 @@ const bookingSchema = new mongoose.Schema({
         required:true,
      },
      count:{
+        type:Number,
+        default:0,
+     },
+     classCount:{
         type:Number,
         default:0,
      },
@@ -44,8 +62,9 @@ const bookingSchema = new mongoose.Schema({
      },
      pricePaid:{
         type:Number,
-     }
-     
+     } 
+},{
+   timestamps:true
 })
 
 bookingSchema.index({tutorId: 1, studentId: 1, courseId: 1 }, { unique: true });
