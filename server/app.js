@@ -44,7 +44,6 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 const allowedOrigins = [
   "http://localhost:3001",
-  "http://localhost:3000",
   "http://192.168.60.127:3001", // Add your local IP here
 ];
 
