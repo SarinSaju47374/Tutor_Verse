@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import "../../scss/screen/admin/AdminDash.scss"
+import "../../scss/screen/Admin/AdminDash.scss"
 import axios from "../../axios";
 import TabsAdmin from "../../components/Admin/TabsAdmin"
 import ChartAdmin from "../../components/Admin/ChartAdmin"
