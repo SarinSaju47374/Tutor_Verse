@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link,useNavigate } from "react-router-dom"; 
-import "../../scss/screen/student/LoginStudent.scss";
+import "../../scss/screen/Student/LoginStudent.scss";
 import { loginSchema } from "../../schemas"
 import { useFormik } from "formik"
 import { Dna } from "react-loader-spinner"
