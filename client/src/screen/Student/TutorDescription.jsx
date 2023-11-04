@@ -110,9 +110,9 @@ function TutorDescription() {
       <div className="det">
         <div className="info">
           <div className="breadCrumbs">
-            <Link >Home</Link> <span>></span>
-            <Link to={`/course/${data.course?._id}`}>Course Description</Link> <span>></span>
-            <Link to={`/course/tutor/${data.course?._id}`}>Tutor List</Link> <span>></span>
+            <Link >Home</Link> <span>&#62;</span>
+            <Link to={`/course/${data.course?._id}`}>Course Description</Link> <span>&#62;</span>
+            <Link to={`/course/tutor/${data.course?._id}`}>Tutor List</Link> <span>&#62;</span>
             <Link className="active">Tutor Description</Link>
           </div>
           <h3>{data?.course?.courseName}</h3>

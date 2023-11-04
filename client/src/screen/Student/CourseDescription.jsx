@@ -25,8 +25,8 @@ function CourseDescription() {
       <div className="det">
         <div className="info">
           <div className="breadCrumbs">
-            <Link to="/">Home</Link> <span>></span>
-            <Link to="/courses">Courses</Link> <span>></span>
+            <Link to="/">Home</Link> <span>&#62;</span>
+            <Link to="/courses">Courses</Link> <span>&#62;</span>
             <Link className="active">Course Description</Link>
           </div>
           <h3>{data.courseName}</h3>
