@@ -5,7 +5,7 @@ import GlobalFilter from "./GlobalFilter"
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 import axios from "../../axios"
 import 'react-tooltip/dist/react-tooltip.css'
-function DataTableStudentBooking({ columns, data, actions, hiddenRows, modified, download, setShow, show, setBookings }) {
+function DataTableStudentBooking({ columns, data, actions, hiddenRows, modified, download, setShow, show, setBookings, bookingActions }) {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     if (data) {
         columns = useMemo(() => columns, [])
@@ -65,7 +65,7 @@ function DataTableStudentBooking({ columns, data, actions, hiddenRows, modified,
 
         // }, 0);
     }, [pageIndex]);
-    console.log("😘", data)
+  
     return (
         <>
             <GlobalFilter filter={state.globalFilter} setFilter={setGlobalFilter} />
@@ -95,7 +95,7 @@ function DataTableStudentBooking({ columns, data, actions, hiddenRows, modified,
                             return (
                                 <tr {...row.getRowProps()} key={index}>
                                     {row.cells.map((cell, index) => (
-                                        <td {...cell.getCellProps()} key={index} style={{ padding: "12px", fontSize: ".85rem" ,textAlign:"center"}}>
+                                        <td {...cell.getCellProps()} key={index} style={{ padding: "12px", fontSize: ".85rem", textAlign: "center" }}>
 
                                             {cell.render('Cell')}
 
@@ -105,36 +105,31 @@ function DataTableStudentBooking({ columns, data, actions, hiddenRows, modified,
                                             {
                                                 (cell.column.id === "start date" && (
                                                     row.original.startDate ?
-
-
                                                         new Date(row.original.startDate).toLocaleDateString(undefined, options)
                                                         :
                                                         "No Date Mentioned"
-
                                                 ))
-                                                
+
                                             }
                                             {
                                                 (cell.column.id === "end date" && (
                                                     row.original.endDate ?
-
-
                                                         new Date(row.original.endDate).toLocaleDateString(undefined, options)
                                                         :
                                                         "No Date Mentioned"
 
                                                 ))
-                                                
+
                                             }
                                             {
                                                 (cell.column.id === "cancel" && (
-                                                    row.original.cancellationRequest.requestedByStudent                                                    ?
-                                                         <div style={{width:"12px",height:"12px",borderRadius:"50%",backgroundColor:"red",margin:"auto "}}>.</div>
+                                                    row.original.cancellationRequest.requestedByStudent ?
+                                                        <div style={{ width: "12px", height: "12px", borderRadius: "50%", backgroundColor: "red", margin: "auto " }} data-tooltip-id="status-cancel" data-tooltip-content="Cancellation Requested">.<ReactTooltip id="status-cancel" /></div>
                                                         :
-                                                        null
+                                                        <div style={{ width: "12px", height: "12px", borderRadius: "50%", border: "solid red 1px", margin: "auto " }} data-tooltip-id="status-no-cancel" data-tooltip-content="No Cancellation is Requested">.<ReactTooltip id="status-no-cancel" /></div>
 
                                                 ))
-                                                
+
                                             }
                                             {
                                                 cell.column.id === "view" && (
@@ -144,6 +139,35 @@ function DataTableStudentBooking({ columns, data, actions, hiddenRows, modified,
                                                     </button>
                                                 )
                                             }
+                                            {
+                                                cell.column.id === "actions" &&
+                                                (row.original.cancellationRequest.requestedByStudent && (row.original.cancellationRequest.cancellationStatus === "pending") ?
+                                                    (
+                                                        bookingActions.map((ele, ind) => {
+                                                            if (ele.type === 'approve') {
+                                                                return (
+                                                                    <button key={ind} onClick={() => ele.handler(row.original._id)} data-tooltip-id="approve" data-tooltip-content="Approve Cancellation">
+                                                                        {ele.label}
+                                                                        <ReactTooltip id="approve" />
+                                                                    </button>
+                                                                );
+                                                            } else if (ele.type === 'disapprove') {
+                                                                return (
+                                                                    <button key={ind} onClick={() => ele.handler(row.original._id)} data-tooltip-id="disapprove" data-tooltip-content="View Bookings">
+                                                                        {ele.label}
+                                                                        <ReactTooltip id="disapprove" />
+                                                                    </button>
+                                                                );
+                                                            }
+                                                            return null; // Make sure to return something in case the condition is not met
+                                                        })
+                                                    ) : (
+                                                        row.original.cancellationRequest.cancellationStatus !== "pending" &&
+                                                        <h5>{row.original.cancellationRequest.cancellationStatus}</h5>
+                                                    )
+                                                )
+                                            }
+
 
 
                                             {/* {cell.column.id === 'actions' ? (

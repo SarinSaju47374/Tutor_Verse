@@ -37,6 +37,14 @@ router.route("/load-messagesS").get(studentAuth,messageController.loadMessages);
 
 router.route("/load-bookings").get(studentAuth,studentController.loadBookingList);
 
+router.route("/readS").post(studentAuth,messageController.readMessage);
+
+router.route("/cancellation-request").post(studentAuth,studentController.cancellationRequest);
+
+router.route("/view-unread-messages").get(messageController.viewUnReadMessages);
+
+
+
      
  
  

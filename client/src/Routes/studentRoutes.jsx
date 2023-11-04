@@ -12,7 +12,9 @@ import StudentChat from "../screen/Student/StudentChat.jsx";
 import StudentBlogs from "../screen/Student/StudentBlogs.jsx";
 import BlogPageStudent from "../screen/BlogPageStudent.jsx";
 import BookingsStudent from "../screen/Student/BookingsStudent.jsx"
+ 
 const studentRoutes = (
+  
   <Route element={<StudentPrivateRoutes />}>
     <Route index element={<Home />} />
     <Route path="courses" element={<CourseList/>} />

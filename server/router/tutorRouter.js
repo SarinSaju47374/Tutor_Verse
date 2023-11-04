@@ -39,6 +39,11 @@ router.route("/update-blog").post(tutorAuth,tutorController.updateBlog);
 
 router.route("/delete-blog").delete(tutorAuth,tutorController.deleteBlog);
 
+router.route("/readT").get(tutorAuth,messageController.readMessage);
+
+router.route("/create-room-link").get(tutorAuth,commonController.roomLink);
+
+
 //Public
 router.route("/register-tutor").post(tutorController.registerTutorDetails)
 

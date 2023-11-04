@@ -7,13 +7,14 @@ const InputComponentTutor = ({socket,currentRoomId,id}) => {
   const navigate = useNavigate();
 
    async function createRoom() {
-    const uuide = uuid();
-    console.log("Hello")
+   
+    const response = await axios.get("/create-room-link")
+    console.log(response.data.link)
     if (socket && currentRoomId) {
       const messageWithButton = `
         <div className="bazinga">
           <p>Click the button below to join the room:</p>
-          <a href="/room/${uuide}" target="_blank">
+          <a href="${response.data.link}" target="_blank">
             <button>Join Room</button>
           </a>
         </div>

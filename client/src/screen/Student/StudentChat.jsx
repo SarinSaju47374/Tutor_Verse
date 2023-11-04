@@ -19,7 +19,7 @@ const StudentChat = () => {
   let studentId = useSelector(state => state.student.user?.id);
   
   useEffect(() => {
-    const newSocket = io(ENDPOINT, { transports: ['websocket'] });
+    const newSocket = io(ENDPOINT, { transports: ['websocket'] }); 
     setSocket(newSocket);
 
     async function fetchChatRooms() {
@@ -55,11 +55,9 @@ const StudentChat = () => {
             roomId:currentRoom?._id
           }
         })
-       console.log(response.data.messages)
         if(response.data.empty) {
           setMessages([])
         }else{
-          console.log("|asdfasdfasdfaasdfaasdf    ")
           setMessages(response.data.messages)
         }
       }

@@ -11,8 +11,12 @@ import fs from "fs";
 import { Server } from "socket.io";
 const app = express();
 const server = http.createServer(app);
+import bookingModel from "./model/bookingModel.js";
+
+// import moment from 'mooment'
 import axios from "axios";
 const io = new Server(server, {
+  pingTimeout:60000,
   cors: {
     origin: "*",
   },
@@ -83,12 +87,52 @@ const rooms = {};
 io.on("connection", (socket) => {
   console.log("We are connected!");
 
+  socket.on("joinNotificationRoom", async (userId) => {
+    const bookings = await bookingModel.find({studentId:userId}).populate('courseId')
+   
+    // const bookings = [
+    //   {
+    //     startDate: "2023-11-01T00:00:00.000+00:00",
+    //     endDate: "2023-11-05T00:00:00.000+00:00",
+    //     message:"Sloppy amigos",
+    //     slot: {
+    //       value: "10:40",
+    //     },
+    //   },
+    //   {
+    //     startDate: "2023-10-01T00:00:00.000+00:00",
+    //     endDate: "2023-11-04T00:00:00.000+00:00",
+    //     message:"Bitch Ya!",
+    //     slot: {
+    //       value: "10:41",
+    //     },
+    //   },
+    //   {
+    //     startDate: "2023-11-01T00:00:00.000+00:00",
+    //     endDate: "2023-11-02T00:00:00.000+00:00",
+    //     message:"Astala Vista Bitches!",
+    //     slot: {
+    //       value: "10:43",
+    //     },
+    //   },
+    // ];
+    socket.join(userId)
+    let startDate = new Date("2023-11-01T00:00:00.000+00:00")
+    let endDate = new Date("2023-11-05T00:00:00.000+00:00")
+    let value = "10:06"
+    // scheduleNotification(startDate,endDate,value,io,userId)
+    
+    bookings.map(ele=>{
+      let message = `Your ${ele.courseId.courseName} is scheduled at ${ele.slot.label}`;
+      scheduleNotification(ele.startDate,ele.endDate,ele.slot.value,message,io,userId)
+    })
+  });
+
   socket.on("joinRoom", (roomId) => {
     socket.join(roomId);
   });
 
   socket.on("sendMessage", (roomId, message) => {
-    console.log("Check Amigo!🚚🚚🚚🚚🚚", message);
     io.to(roomId).emit("message", message);
   });
 
@@ -143,10 +187,27 @@ io.on("connection", (socket) => {
 //     socket.to(roomID).emit("toggle video", { vid });
 //   });
 
-  socket.on("end call", ({ roomID }) => {
-    socket.to(roomID).emit("end call");
+  socket.on("end call", ({ roomID,status }) => {
+    socket.to(roomID).emit("end call",status);
+    window.close();
   });
+
 });
+
+function scheduleNotification(startDate,endDate,slotTime,message,io,userId){
+    startDate = new Date(startDate);
+    endDate = new Date(endDate);
+    const [slotHour, slotMinute] = slotTime.split(':').map(Number);
+    const job = schedule.scheduleJob(`0 ${slotMinute} ${slotHour-1} * * *`, function () {
+    const now = new Date(new Date().setUTCHours(0, 0, 0, 0))  ;
+  
+    if (now >= startDate && now <= endDate && now.getDay() !== 0) { 
+      io.to(userId).emit('notification',`${message}`)
+      console.log('Sending notification...');
+    } else {
+        job.cancel();
+    }
+})}
 
 connect()
   .then(() => {

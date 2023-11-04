@@ -34,7 +34,7 @@ const PaymentSuccess = () => {
     <div className="content-success">
       <div className="data">
          Payment Successful 
-          {ready ? <Link>Go to Bookings</Link> : "Loading ......."} 
+          {ready ? <Link to="/bookings">Go to Bookings</Link> : "Loading ......."} 
        </div> 
     </div>
   )

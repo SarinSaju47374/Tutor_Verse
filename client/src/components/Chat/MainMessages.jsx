@@ -1,12 +1,24 @@
 import { useRef, useEffect } from 'react';
-
+import axios from "../../axios"
+import {toast} from "react-toastify"
 const MainMessages = ({ messages, id, currentRoom,profile }) => {
   const myRef = useRef(null);
+  // let data = useSelector(state => state.student.user?.id)
   const isHTML = (str) => /<[a-z][\s\S]*>/i.test(str);
   useEffect(() => {
     myRef.current?.scrollIntoView({ behavior: 'smooth' });
+    
   }, [messages]);
-  console.log("😍", currentRoom)
+  useEffect(()=>{
+    async function readBy(){
+      let response = await axios.post("/readS",{roomId:currentRoom});
+      if(response.success){
+        toast.success("Hurrah")
+      }
+    }
+    readBy();
+  },[currentRoom])
+  
   return (
     <div className="chat">
       <div className="chat-data">

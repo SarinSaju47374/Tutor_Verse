@@ -1,10 +1,13 @@
-import React from 'react'
-
+import { useEffect }  from 'react'
+import {useSelector} from "react-redux";
 const SideBar = ({chatRooms,setCurrentRoom,socket}) => {
+  // let data = useSelector(state => state.student.user?.id);
+  useEffect(()=>{
 
+  },[])
   function handleRoom(elem){
     setCurrentRoom(elem)
-    if (socket && elem) {
+    if (socket && elem) { 
       socket.emit('joinRoom', elem._id);
     }
   }

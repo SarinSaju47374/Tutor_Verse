@@ -20,7 +20,35 @@ function Navbar({loggedIn}) {
         setLoginList(false);
       }
     }
-
+    // useEffect(() => {
+    //   const newSocket = io(ENDPOINT, { transports: ['websocket'] });
+    //   setSocket(newSocket);
+  
+    //   async function fetchChatRooms() {
+    //     try {
+    //       const response = await axios.get('/load-chatrooms-student');
+    //       if (response.data) {
+    //         setChatRooms(response.data);
+    //       }
+    //     } catch (error) {
+    //       console.error('Error fetching chat rooms:', error);
+    //     }
+    //   }
+  
+    //   fetchChatRooms();
+  
+    //   if (newSocket) {
+    //     newSocket.on('message', (message) => {
+    //       setMessages((prevMessages) => [...prevMessages, message]);
+    //     });
+    //   }
+  
+    //   return () => {
+    //     if (newSocket) {
+    //       newSocket.disconnect();
+    //     }
+    //   };
+    // }, []); 
     document.addEventListener('click', handleClickOutside);
     return () => {
       document.removeEventListener('click', handleClickOutside);

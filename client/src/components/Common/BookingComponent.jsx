@@ -1,7 +1,16 @@
-function BookingComponent({ data }) {
+import {toast} from 'react-toastify';
+import axios from '../../axios';
+
+function BookingComponent({ data ,setMod,mod}) {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    function handleCancel(){
-        
+    async function handleCancel(bid) {
+        let response  = await axios.post("/cancellation-request",{
+            bid
+        }) 
+        if(response.data.message){
+            toast.success(response.data.message)
+            setMod(!mod)
+        }else{toast.success(response.data.error)} 
     }
     return (
         <div className="booking-list-child">
@@ -47,9 +56,24 @@ function BookingComponent({ data }) {
                                 <div className="td">{new Date(ele.startDate).toLocaleDateString(undefined, options)}</div>
                                 <div className="td">{new Date(ele.endDate).toLocaleDateString(undefined, options)}</div>
                                 <div className="td">
-                                    <button 
-                                        onClick={()=>handleCancel(ele._id)}
-                                    >Cancel</button>
+                                    {
+                                        !ele?.cancellationRequest?.requestedByStudent ? (
+                                            <button onClick={() => handleCancel(ele._id)}> Cancel </button>
+                                        ) : (
+                                            (() => {
+                                                switch (ele?.cancellationRequest?.cancellationStatus) {
+                                                    case 'approved':
+                                                        return <div className="approved status">Approved</div>;
+                                                    case 'disapproved':
+                                                        return <div className="disapproved status">Rejected</div>;
+                                                    case 'pending':
+                                                        return <div className="pending status">Pending for Approval</div>;
+                                                    default:
+                                                        return null;
+                                                }
+                                            })()
+                                        )
+                                    }
                                 </div>
                             </div>
                         ))

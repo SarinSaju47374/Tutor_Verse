@@ -12,7 +12,7 @@ const otpSchema = new mongoose.Schema({
         unique:true,
     }
 }, {timestamps: true}) 
-otpSchema.index({createdAt: 1},{expireAfterSeconds: 120});
+otpSchema.index({createdAt: 1},{expireAfterSeconds: 110});
 // Get the indexes of the 'tokens' collection
 const otpModel = mongoose.model("otp",otpSchema);
 

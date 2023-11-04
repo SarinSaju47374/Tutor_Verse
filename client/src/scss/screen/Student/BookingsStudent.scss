@@ -58,6 +58,19 @@
             .td{
                 width:8rem;
                 text-align: center;
+                .status{
+                    font-weight: 700;   
+                }
+                .approved{
+                    color:rgb(19, 255, 19);
+                }
+                .pending{
+                    color:orange;
+                }
+                .disapproved{
+                    color:rgb(229, 72, 72);
+                }
+                
             }
             button{
                 @include button-style;

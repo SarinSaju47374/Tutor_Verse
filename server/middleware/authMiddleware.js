@@ -2,7 +2,7 @@ import extractCookie  from "../utils/extractCookie.js"
 import decodeToken from "../utils/decodeToken.js";
 
 export const tutorAuth = (req,res,next)=>{
-    try{
+    try{    
         const token = extractCookie(req,"tokenA");
         const payload = decodeToken(token,process.env.SECRET_KEY);
          

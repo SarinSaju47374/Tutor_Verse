@@ -83,7 +83,7 @@ function AdminStudentList() {
       accessor: 'cancel'
     },
     {
-      Header: 'Actions',
+      Header: 'Cancellation',
       accessor: 'actions'
     },
   ]
@@ -145,16 +145,102 @@ function AdminStudentList() {
       },
     },
   ]
+  const bookingActions= [
+    {
+      type: 'approve',
+      label: (
+          <i className="fa-solid fa-thumbs-up"></i>
+      ),
+      handler: async (id) => {
+        console.log("😡😡", id)
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, Approve it!',
+          cancelButtonText: 'No, cancel!',
+          reverseButtons: true
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            let response = await axioss.put("/approve-cancellation", {
+                id: id
+            })
+            if (response.data.success) {
+              Swal.fire(
+                'Approved!',
+                'The Student has been approved the cancellation.',
+                'success'
+              )
+            }
+            // setModified(!modified)
+          } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+          ) {
+            Swal.fire(
+              'Cancelled',
+              'Your imaginary file is safe :)',
+              'error'
+            )
+          }
+
+        })
+      },
+    },
+    {
+      type: 'disapprove',
+      label: (
+          <i className="fa-solid fa-thumbs-down"></i>
+      ),
+      handler: async (id) => {
+        console.log("😡😡", id)
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, Disapprove it!',
+          cancelButtonText: 'No, cancel!',
+          reverseButtons: true
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            let response = await axioss.put("/disapprove-cancellation", {
+                id: id
+            })
+            if (response.data.success) {
+              Swal.fire(
+                'Blocked!',
+                'The Student has been disapproved cancellation.',
+                'success'
+              )
+            }
+            // setModified(!modified)
+          } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+          ) {
+            Swal.fire(
+              'Cancelled',
+              'Your imaginary file is safe :)',
+              'error'
+            )
+          }
+
+        })
+      },
+    },
+  ]
   console.log("bam bam",bookings) 
   return (
     <div>
       <div className="info">
         <h1>Students</h1>
       </div>
-      <div className="dataTable">
+      <div className="dataTable" style={{overflowX:"scroll",width:"80%"}}>
         {!show ? Object.keys(data).length === 0 ? "No Data Added" : <DataTableStudent columns={studentColumns} data={data} actions={studentActions} show={show} setShow={setShow}/*hiddenRows={hiddenRows}*/ setBookings={setBookings}/>
         :
-        Object.keys(data).length === 0 ? "No Data Added" : <DataTableStudentBooking columns={bookingColumns} data={bookings} /*actions={bookingActions}*/  />
+         bookings.booking.length === 0 ? "No Bookings Listed to this Student" : <DataTableStudentBooking columns={bookingColumns} data={bookings}  bookingActions={bookingActions}  />
         }
       </div>
     </div>

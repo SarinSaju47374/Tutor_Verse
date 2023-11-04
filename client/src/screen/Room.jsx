@@ -5,6 +5,7 @@ import { io } from "socket.io-client";
 const ENDPOINT = import.meta.env.VITE_SERVER_URL;
 import {toast} from "react-toastify"; 
 import {useNavigate} from "react-router-dom";
+import axios from "../axios";
 
 const Room = () => {
     const navigate = useNavigate();
@@ -19,66 +20,84 @@ const Room = () => {
     const [vid,setVid] = useState(true);
     const [endCall,setEndCall] = useState(false);
     const [socket,setSocket] = useState()
+
     useEffect(() => {
         const newSocket = io(ENDPOINT, { transports: ['websocket'] });
         setSocket(newSocket)
-        navigator.mediaDevices?.getUserMedia({ audio: mic, video: vid }).then(stream => {
-            userVideo.current.srcObject = stream;
-            userStream.current = stream;
-            socketRef.current = newSocket;
-            console.log("😪😪",userStream.current.getAudioTracks())
-            socketRef.current.emit("join room", roomID);
-
-            socketRef.current.on('other user', userID => {
-                console.log("other  user",userID)
-                callUser(userID);
-                otherUser.current = userID;
+        async function run(){
+            const response = await axios.get("/verify-room-link",{
+                params:{tk:roomID}
             });
-
-            socketRef.current.on("user joined", userID => {
-                console.log("user joined", userID)
-                otherUser.current = userID;
-            });
-
-            socketRef.current.on("offer", handleRecieveCall);
-
-            socketRef.current.on("answer", handleAnswer);
-
-            socketRef.current.on("ice-candidate", handleNewICECandidateMsg);
-
-
-
-            // socketRef.current.on('toggle mic', ({ mic }) => {
-            //     setMic(mic);
-            //     console.log("Rambo churos")
-            // });
-            
-          
-              socketRef.current.on('toggle video', ({ vid }) => {
-                setVid(vid);
-                console.log("ASTALA VISTA AMIGO VAMOS : ",vid)
-              });
-          
-              socketRef.current.on('end call', () => {
-                
-                setEndCall(true);
-              });
-
-              socketRef.current.on('check',(vid,message)=>{
-                    console.log(message,vid,"😘")
-                })
-                
-                socketRef.current.on('check', (data) => {
-                    const { vid, message, roomID } = data;
-                    console.log("Ha Ha");
-                    socketRef.current.emit('message', message);
-                  });
-                  socketRef.current.on('message', (message) => {
-                    console.log("targetted");
-                    console.log(message, "😘");
-                  });
-        });
-      
+            if(response.data.error){
+                toast.error("This link ain't valid as of now!")
+                setTimeout(()=>{
+                    window.close();
+                },3000)
+            }else{
+                navigator.mediaDevices?.getUserMedia({ audio: mic, video: vid }).then(stream => {
+                    userVideo.current.srcObject = stream;
+                    userStream.current = stream;
+                    socketRef.current = newSocket;
+                    console.log("😪😪",userStream.current.getAudioTracks())
+                    socketRef.current.emit("join room", roomID);
+        
+                    socketRef.current.on('other user', userID => {
+                        console.log("other  user",userID)
+                        callUser(userID);
+                        otherUser.current = userID;
+                    });
+        
+                    socketRef.current.on("user joined", userID => {
+                        console.log("user joined", userID)
+                        otherUser.current = userID;
+                    });
+        
+                    socketRef.current.on("offer", handleRecieveCall);
+        
+                    socketRef.current.on("answer", handleAnswer);
+        
+                    socketRef.current.on("ice-candidate", handleNewICECandidateMsg);
+        
+        
+        
+                    socketRef.current.on('toggle mic', ({ mic }) => {
+                        setMic(mic);
+                        console.log("Rambo churos")
+                    });
+                    
+                  
+                      socketRef.current.on('toggle video', ({ vid }) => {
+                        setVid(vid);
+                        console.log("ASTALA VISTA AMIGO VAMOS : ",vid)
+                      });
+                  
+                      socketRef.current.on('end call', (status) => {
+                        if(status){
+                            window.close()
+                        }
+                      });
+        
+                      socketRef.current.on('check',(vid,message)=>{
+                            console.log(message,vid,"😘")
+                        })
+                        
+                        socketRef.current.on('check', (data) => {
+                            const { vid, message, roomID } = data;
+                            console.log("Ha Ha");
+                            socketRef.current.emit('message', message);
+                          });
+                          socketRef.current.on('message', (message) => {
+                            console.log("targetted");
+                            console.log(message, "😘");
+                          });
+                });
+              
+                setTimeout(()=>{
+                    window.close();
+                },3600000)
+            }
+        }
+        run();
         
         return () => {
             if (newSocket) {
@@ -121,7 +140,6 @@ const Room = () => {
     // }
     function toggleMic() {
         const audioTracks = userStream.current.getAudioTracks();
-        console.log(userStream.current.getAudioTracks()[0])
         audioTracks.forEach(track => {
             track.enabled = !track.enabled;
             setMic(track.enabled)
@@ -137,7 +155,6 @@ const Room = () => {
       
       function toggleVideo() {
         const videoTracks = userStream.current.getVideoTracks();
-        console.log(userStream.current.getVideoTracks()[0])
         videoTracks.forEach(track => {
             track.enabled = !track.enabled
             // peerRef.current.getSenders().forEach(sender => {
@@ -154,10 +171,8 @@ const Room = () => {
     
       function endCallHandler() {
         setEndCall(true);
-        // Notify partner of call end
-        socketRef.current.emit('end call', { roomID });
-        // Redirect to chat page
-        navigate('/tutor/chat'); // Make sure to import 'useHistory' from 'react-router-dom'
+        socketRef.current.emit('end call', {roomID:roomID,status:true });
+         
     }
     
      

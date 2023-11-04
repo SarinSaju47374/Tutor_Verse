@@ -107,6 +107,7 @@ export async function loginStudent(req, res) {
             fName: student.fName,
             lName: student.lName,
             email: student.email,
+            role:"student"
         }
         bcrypt.compare(psswd, student.psswd, async function (err, result) {
             if (err) res.send(500).send(err)
@@ -423,24 +424,19 @@ export async function loadBookingList(req, res) {
     }
 }
 /**
- * @route   GET /api/cancel-bookings   🤓🤓🤓🤓🤓
- * @desc    cancels the Booking
+ * @route   POST /api/cancel-bookings   🤓🤓🤓🤓🤓
+ * @desc    requests the cancellation of the Booking
  * @access  Private
  */
-export async function cancelBooking(req, res) {
+export async function cancellationRequest(req, res) {
     try {
-        let {id} = req.payload; //Taking Data from the Token 
+        const {id} = req.payload; //Taking Data from the Token 
+        const {bid} = req.body;
         if(!id) res.status(400).send({"err":"Invalid user"})
-        let bookings = await bookingModel.find({studentId:id})
-                        .populate({
-                            path:'tutorId',
-                            select:'fName lName'
-                        })
-                        .populate({
-                            path:'courseId',
-                            select:'courseName board price'
-                        })
-        res.status(200).send(bookings)
+        let booking = await bookingModel.findOne({_id:bid})
+        booking.cancellationRequest.requestedByStudent = true;
+        await booking.save();
+        res.status(200).send({message:"The cancel for the course is requested"})
     } catch (err) {
         console.error(err);
         return res.status(500).json({ error: 'Internal Server Error' });

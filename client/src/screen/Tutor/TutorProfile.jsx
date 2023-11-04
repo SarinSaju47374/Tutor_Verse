@@ -263,8 +263,8 @@ function TutorProfile({loggedIn}) {
           setOpenSlotUpdate(false);
           setModified(!modified)
           
-       }else{
-          toast.error(response.data.err)
+       }else if(response.data.error){
+          toast.error(response.data.error)
           setOpenSlotUpdate(false);
           setModified(!modified)
        }

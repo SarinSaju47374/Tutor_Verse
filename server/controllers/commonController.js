@@ -1,6 +1,7 @@
 import { studentModel } from "../model/studentModel.js";
 import { tutorModel } from "../model/tutorModel.js";
 import otpModel from "../model/otpModel.js";
+import videoRoomModel from "../model/videoRoomModel.js";
 import blogModel from "../model/blogModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -214,6 +215,49 @@ export async function viewSpecBlog(req, res) {
     } catch (err) {
       console.error(err);
       return res.status(500).send({ err: true });
+    }
+  }
+  
+/**
+ * @route   get /api/create-room-link
+ * @desc    Creates a timebased Room link for video Calling; 
+ * @access  Private
+*/
+export async function roomLink(req, res) {
+    try {
+       const {id} = req.payload;
+       let num = generateOtp();
+       await videoRoomModel.create({
+        tutorId:id,
+        num:num
+       })
+       const  token = jwt.sign({id:id,num:num},process.env.SECRET_KEY_URL,{expiresIn:"3600s"});
+       const link = `/room/${token}`
+       res.status(200).send({link:link});
+    } catch (err) {
+      console.error(err);
+      return res.status(500).send({ err: true });
+    }
+  }
+
+
+/**
+ * @route   get /api/verify-room-link
+ * @desc    verifies the room link 
+ * @access  Private
+*/
+export async function verifyRoomLink(req, res) {
+    try {
+       const {tk} = req.query;
+       console.log({tk})
+       let {id,num} = jwt.verify(tk,process.env.SECRET_KEY_URL);
+       let data = await videoRoomModel.findOne({tutorId:id,num:num});
+       console.log({data})
+       if(!data) return res.status(200).send({error:"Not a Valid URL"})
+       return res.status(200).send({success:"Valid URL"})
+    } catch (err) {
+      console.error(err);
+      return res.status(200).send({ error: true });
     }
   }
   

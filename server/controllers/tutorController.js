@@ -16,7 +16,7 @@ import slotAvailability from "../utils/slotAvailability.js";
 import slotAvailabilityV2 from "../utils/slotAvailabilityV2.js";
 import fs from 'fs';
 import blogModel from "../model/blogModel.js";
-
+import bookingModel from "../model/bookingModel.js"
 
 /**
  * @route   POST /api/register-tutor
@@ -108,6 +108,7 @@ export async function loginTutor(req, res) {
             profile:tutor.profilePhoto,
             email:tutor.email,
             schedule:tutor.schedule,
+            role:"tutor"
         }
         bcrypt.compare(psswd, tutor.psswd, async function (err, result) {
             if (err) {
@@ -211,27 +212,36 @@ export async function saveSlot(req, res) {
  */ 
 export async function updateSlot(req, res) {
     try {
-        let {courseId, slots} = req.body;
-        
-        let {id} = req.payload;
-        let courseSlots = await tutorSlotModel.findOne({ courseId: courseId });
-        
+        const {courseId, slots} = req.body;
+        const copySlot = [...slots];
+        const {id} = req.payload;
+        const courseSlots = await tutorSlotModel.findOne({ courseId: courseId });
+        const bookings = await bookingModel.find({tutorId:id})
+        const bookedSlots = bookings.map(ele=>ele.slot.label)
+        console.log({bookedSlots})
         if(courseSlots){
             let result = await slotAvailabilityV2(id,slots,courseId)
             console.log("Result is : ",result)
             if(result.avail) return res.status(200).send({"err":`${result.strng} are already selected slots!`});
             let tutorSlots = courseSlots.tutors.find(data => data.tutorId == id);
+            var slotsNotInCommon = tutorSlots.slots.filter(slotA => !slots.some(slotB => slotA.value === slotB.value));
+            var slotConflict = slotsNotInCommon.filter(ele=>bookedSlots.includes(ele.label));     
+            slotConflict.forEach(ele=>slots.push({value:ele.value,label:ele.label}))
+
             if (tutorSlots) {
                 tutorSlots.slots = slots;
-                // slots.forEach(slot => {
-                //     tutorSlots.slots.push(slot);
-                // });
             } 
             await courseSlots.save();
             await updateTutorSchedule(id,courseId,slots);
         }
         
-        return res.status(200).send({"success":"Slot(s) saved successfully!"});
+        if(slotConflict.length==slotsNotInCommon.length){
+            return res.status(200).send({error:"Can Edit because the slot is Booked!"});
+        }else if(slotConflict.length==0 && slots.length>0){
+            return res.status(200).send({success:"Slot(s) saved successfully!"});
+        }else{
+            return res.status(200).send({success:"Except booked slots other slots are edited!"});
+        }
     } catch (err) {
         console.log(err);
         return res.status(500).send(err);
@@ -249,6 +259,10 @@ export async function slotDelete(req, res) {
         console.log(courseId)
         let {id} = req.payload;
         // let courseSlots = await tutorSlotModel.findOne({ courseId: courseId });
+        let bookings = await bookingModel.find({courseId:courseId,tutorId:id});
+        if(bookings.length>0){
+            return res.status(200).send({"error":"You cant delete this slot. Its already booked by a student"})
+        }
         let tutor = await tutorModel.findOne({_id:id});
 
         await tutorSlotModel.updateOne(

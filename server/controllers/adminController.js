@@ -271,4 +271,47 @@ export async function getStudentBookings(req, res) {
       }
 }
 
+/**
+ * @route   PUT /api/approve-cancellation
+ * @desc    This approves the cancellation requested by the student 
+ * @access  Private
+*/
+export async function approveCancellation(req, res) {
+    try {
+        let {id} = req.body;
+        console.log(id)
+        let booking = await bookingModel.findOne({_id:id})
+        console.log(booking)
+        booking.cancellationRequest.approvedByAdmin = true;
+        booking.cancellationRequest.cancellationStatus = 'approved';
+        let data = await booking.save();
+        console.log(data)
+        res.status(200).json({success:true});
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
+}
+
+/**
+ * @route   PUT /api/disapprove-cancellation
+ * @desc    This disapproves the cancellation requested by the student 
+ * @access  Private
+*/
+export async function disapproveCancellation(req, res) {
+    try {
+        let {id} = req.body;
+        console.log(id)
+        let booking = await bookingModel.findOne({_id:id})
+        console.log(booking)
+        booking.cancellationRequest.cancellationStatus = 'disapproved';
+        let data = await booking.save();
+        console.log(data)
+        res.status(200).json({success:true});
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
+}
+
 

@@ -22,5 +22,6 @@ router.route("/view-spec-blog").get(commonController.viewSpecBlog)
 
 router.route("/reset-session").get(commonController.reset)
 
- 
+router.route("/verify-room-link").get(commonController.verifyRoomLink);
+
 export default router 
