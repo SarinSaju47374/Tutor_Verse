@@ -12,6 +12,7 @@ import { Server } from "socket.io";
 const app = express();
 const server = http.createServer(app);
 import bookingModel from "./model/bookingModel.js";
+import path from "path"
 
 // import moment from 'mooment'
 import axios from "axios";
@@ -30,7 +31,7 @@ const io = new Server(server, {
 //⭐⭐⭐
 
 
-const port = 3000;
+const port = process.env.PORT || 8000;
 
 // Routes
 import studentRouter from "./router/studentRouter.js";
@@ -43,6 +44,7 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 const allowedOrigins = [
   "http://localhost:3001",
+  "http://localhost:3000",
   "http://192.168.60.127:3001", // Add your local IP here
 ];
 
@@ -56,6 +58,13 @@ app.use(
 app.use(morgan("tiny"));
 app.disable("x-powered-by"); //hackers wont know which stack we are using (eg. express)
 app.use("/uploads", express.static("uploads"));
+
+
+
+
+//Production
+
+console.log("BUMChika ")
 // Api Routes
 app.use("/api", studentRouter);
 app.use("/api", tutorRouter);
@@ -63,6 +72,27 @@ app.use("/api", commonRouter);
 app.use("/api", courseRouter);
 app.use("/api", adminRouter);
 
+if (process.env.NODE_ENV === "production") {
+  const __dirname = path.resolve();
+  const basePath = path.dirname(__dirname);
+  app.use(express.static(path.join(basePath, "client/dist")));
+
+  app.get("*", function (req, res) {
+    const indexPath = path.join(basePath, "client/dist/index.html");
+
+    res.sendFile(indexPath, function (err) {
+      if (err) {
+        console.error("Error sending index.html:", err);
+        res.status(500).send(err);
+      } else {
+        console.log("Index.html send successfully");
+      } 
+    });  
+  });
+  
+}else{
+  console.log("Great")
+}
 //test
 app.get("/api/download", async (req, res) => {
   let fileUrl = req.query.url; // Assuming the URL is sent as a query parameter named "url"
