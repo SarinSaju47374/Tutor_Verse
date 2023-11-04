@@ -1,7 +1,7 @@
 import { useState,useEffect } from 'react'
 import {useSelector} from "react-redux"
 import "../../scss/screen/Student/StudentChat.scss";
-import SideBarTut from '../../components/Chat/SideBarTut';
+import SideBarTut from '../../components/Chat/SidebarTut';
 import MainMessages from '../../components/Chat/MainMessages';
 
 import InputComponentTutor from '../../components/Chat/InputComponentTutor';
