@@ -149,7 +149,7 @@ function Home({ loggedIn }) {
                     Checkout the Following Courses
                 </div>
                 <div className="part3-col">
-                    {courses.length > 0 && courses.map((ele, ind) =>
+                    {courses?.length > 0 && courses.map((ele, ind) =>
                         <Link key={ind} to={`/course/${ele._id}`}>
                             <div className="part-card">
                                 <div className="part-card-img">
