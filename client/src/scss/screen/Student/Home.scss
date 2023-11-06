@@ -114,39 +114,50 @@
             width: 80%;
             margin: auto;
             
-            @include grid-4;
-            .part-card{
-                border-radius: 12px;;
-                overflow: hidden;
-                background-color: white;
-                // overflow: hidden;
-                .part-card-img{
-                    width: 100%;
-                    overflow: hidden;
+            @include grid-3;
+            a{   width:16rem;
+                 height:20rem;
 
-                    img{
-                        object-fit: cover;
-                        transition: all 300ms ease;
-                        &:hover{
-                            transform: scale(1.03);
+                .part-card{
+                    border-radius: 12px;
+                    height: 100%;
+                    overflow: hidden;
+                    background-color: white;
+                    // overflow: hidden;
+                    .part-card-img{
+                        width: 100%;
+                        height:80%;
+                        overflow: hidden;
+    
+                        img{
+                            width:100%;
+                            height:100%;
+                            object-position: left;
+                            transition: all 300ms ease;
+                            &:hover{
+                                transform: scale(1.03);
+                            }
                         }
                     }
-                }
-                .part-para{
-                    width:80%;
-                    margin: auto;
-                    .title{
-                        color:black;
-                        font-size: small;
-                        font-weight: 600;
-                    }
-                    p{
-                        font-size: 12px;
-                        color:rgb(92, 86, 86);
-                        width: 95%; /* Set a fixed width for the container */
-                        white-space: nowrap; /* Prevent text from wrapping */
-                        overflow: hidden; /* Hide any overflowed content */
-                        text-overflow: ellipsis;
+                    .part-para{
+                        width:80%;
+                        margin: auto;
+                        
+                        .title{
+                            color:black;
+                            font-size: small;
+                            font-weight: 600;
+                            text-align: center;
+                        }
+                        p{
+                            text-align: center;
+                            font-size: 12px;
+                            color:rgb(92, 86, 86);
+                            width: 95%; /* Set a fixed width for the container */
+                            white-space: nowrap; /* Prevent text from wrapping */
+                            overflow: hidden; /* Hide any overflowed content */
+                            text-overflow: ellipsis;
+                        }
                     }
                 }
             }

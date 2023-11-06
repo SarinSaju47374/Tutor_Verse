@@ -8,6 +8,7 @@ import Blogs from "../components/Common/Blogs.jsx";
 import TutorBlogs from "../screen/Tutor/TutorBlogs.jsx";
 import BlogUpdate from "../screen/Tutor/BlogUpdate.jsx";
 import BlogPage from "../screen/BlogPage.jsx";
+import StudentsBooked from "../screen/Tutor/StudentsBooked.jsx";
 const tutorRoutes = (
   <Route path="/tutor" element={<TutorPrivateRoutes />}>
     <Route index element={<TutorHome />} />
@@ -16,6 +17,7 @@ const tutorRoutes = (
     <Route path="blogs" element={<TutorBlogs/>} /> 
     <Route path="blogs/update/:bid" element={<BlogUpdate/>} /> 
     <Route path="blog/:bid" element={<BlogPage/>} /> 
+    <Route path="bookings" element={<StudentsBooked />} /> 
   </Route>
 );
 

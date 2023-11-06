@@ -43,7 +43,7 @@ import adminRouter from "./router/adminRouter.js";
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 const allowedOrigins = [
-  "http://localhost:3001",
+  "http://localhost:3001", 
   "http://192.168.60.127:3001", // Add your local IP here
 ];
 
@@ -70,6 +70,26 @@ app.use("/api", tutorRouter);
 app.use("/api", commonRouter);
 app.use("/api", courseRouter);
 app.use("/api", adminRouter);
+app.get("/api/download", async (req, res) => {
+  let fileUrl = req.query.url; 
+
+  try {
+    const response = await axios.get(fileUrl, { responseType: "stream" });
+
+    const fileName = fileUrl.split("/").pop();
+    const mimeType = response.headers["content-type"];
+
+    res.setHeader("Content-Type", mimeType);
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="${fileName}"`
+    );
+
+    response.data.pipe(res);
+  } catch (error) {
+    res.status(404).send("File not found");
+  }
+}); 
 
 if (process.env.NODE_ENV === "production") {
   const __dirname = path.resolve();
@@ -93,23 +113,7 @@ if (process.env.NODE_ENV === "production") {
   console.log("Great")
 }
 //test
-app.get("/api/download", async (req, res) => {
-  let fileUrl = req.query.url; // Assuming the URL is sent as a query parameter named "url"
-  // fileUrl = decodeURIComponent(fileUrl).replace(/\s/g, '%20').replace(/\//, '//');
 
-  console.log("😎dfafadsadsf", fileUrl);
-  try {
-    const response = await axios.get(fileUrl, { responseType: "arraybuffer" });
-    const fileName = fileUrl.split("/").pop(); // Extracting the file name from the URL
-    const mimeType = response.headers["content-type"];
-
-    res.setHeader("Content-Type", mimeType);
-    res.setHeader("Content-Disposition", `attachment; filename=${fileName}`);
-    res.send(response.data);
-  } catch (error) {
-    res.status(404).send("File not found");
-  }
-});
 
 const rooms = {};
 //socket io

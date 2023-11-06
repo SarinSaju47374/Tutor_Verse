@@ -13,7 +13,7 @@ function TutorHome() {
    
   return (
      <div className="TutorHome">
-        <Link>
+        <Link to="/tutor/bookings">
           <Tilt>
             <div className="card card-1">
               <h2>Students Allocated</h2>

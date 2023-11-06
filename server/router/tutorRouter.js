@@ -43,6 +43,8 @@ router.route("/readT").get(tutorAuth,messageController.readMessage);
 
 router.route("/create-room-link").get(tutorAuth,commonController.roomLink);
 
+router.route("/load-stud-bookings").get(tutorAuth,tutorController.loadStudentsBookingList);
+
 
 //Public
 router.route("/register-tutor").post(tutorController.registerTutorDetails)

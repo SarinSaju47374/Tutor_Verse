@@ -12,6 +12,8 @@ import StudentChat from "../screen/Student/StudentChat.jsx";
 import StudentBlogs from "../screen/Student/StudentBlogs.jsx";
 import BlogPageStudent from "../screen/BlogPageStudent.jsx";
 import BookingsStudent from "../screen/Student/BookingsStudent.jsx"
+import AboutPage from "../screen/AboutPage.jsx";
+import ContactUsPage from "../screen/ContactUsPage.jsx";
  
 const studentRoutes = (
   
@@ -27,6 +29,8 @@ const studentRoutes = (
     <Route path="blogs" element={<StudentBlogs />} />
     <Route path="blog/:bid" element={<BlogPageStudent/>} /> 
     <Route path="bookings" element={<BookingsStudent/>} /> 
+    <Route path="about-us" element={<AboutPage/>} /> 
+    <Route path="contact-us" element={<ContactUsPage/>} /> 
   </Route>
 );
 export default studentRoutes;

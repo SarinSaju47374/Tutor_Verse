@@ -570,3 +570,29 @@ export async function deleteBlog(req, res) {
     }
 }
 
+/**
+ * @route   GET /api/load-stud-bookings
+ * @desc    loads the bookiing details of specific student associated to specific tutor
+ * @access  Private
+ */
+export async function loadStudentsBookingList(req, res) {
+    try {
+        let {id} = req.payload; //Taking Data from the Token 
+        if(!id) res.status(400).send({"err":"Invalid user"})
+        let bookings = await bookingModel.find({tutorId:id})
+                        .sort({ createdAt: -1 })
+                        .populate({       //🌟🌟🌟🌟🌟🌟 important code to remember
+                            path:'studentId',
+                            select:'fName lName'
+                        })
+                        .populate({
+                            path:'courseId',
+                            select:'courseName board price'
+                        })
+        res.status(200).send(bookings)
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+

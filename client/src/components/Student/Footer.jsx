@@ -58,31 +58,25 @@ function Footer() {
         <div className="footer-section">
           <div className="footer-title">Know Us</div>
           <div className="footer-title-lnks">
-            <Link>About Us</Link>
-            <Link>Contact Us</Link>
-            <Link>FAQs</Link>
-            <Link>Get a Demo</Link>
-            <Link>Become a Teacher</Link>
+            <Link to="/about-us">About Us</Link>
+            <Link to="/contact-us">Contact Us</Link>
+            <Link to="/courses">Courses</Link>           
           </div>
         </div>
         <div className="footer-section">
-          <div className="footer-title">Know Us</div>
+          <div className="footer-title">Explore</div>
           <div className="footer-title-lnks">
-            <Link>About Us</Link>
-            <Link>Contact Us</Link>
-            <Link>FAQs</Link>
-            <Link>Get a Demo</Link>
-            <Link>Become a Teacher</Link>
+            <Link to="/">Home</Link>
+            <Link to="/blogs">Blogs</Link>
+            <Link to="/student/login">Login As Student</Link>  
+            <Link to="/tutor/login">Login As Tutor</Link>  
           </div>
         </div>
         <div className="footer-section">
-          <div className="footer-title">Know Us</div>
+          <div className="footer-title">Registration</div>
           <div className="footer-title-lnks">
-            <Link>About Us</Link>
-            <Link>Contact Us</Link>
-            <Link>FAQs</Link>
-            <Link>Get a Demo</Link>
-            <Link>Become a Teacher</Link>
+            <Link to="/student/register">Register As Student</Link>
+            <Link to="/tutor/register">Regiser As Tutor</Link>
           </div>
         </div>
       </div>

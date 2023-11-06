@@ -47,39 +47,29 @@ function TutorNavbar({loggedIn}) {
 
   return (
     <nav className={styles.userNav}>
-      <div className={styles.logo}><img src="/images/tutorverse cyan logo.png" alt="" /></div>
+      <Link to="/tutor" className={styles.logo}><img src="/images/tutorverse cyan logo.png" alt="" /></Link>
       <div className={styles.list}>
         <ul>
-            <li><Link to="/tutor">Home</Link></li>
-            
-            <li><Link>Blogs</Link></li>
-            <li><Link to="/tutor/profile">Profile</Link></li>   
-           
-            
-             
+            <li><Link to="/tutor">Home</Link></li>  
+            <li><Link to="/tutor/blogs">Blogs</Link></li>
+            <li><Link to="/tutor/profile">Profile</Link></li>        
             <li><Link to="/tutor/login">Logout</Link></li>
  
         </ul>
       </div>
        
-        <button className={styles.admission}><i className="fa-solid fa-list-ul"></i>  Check Your Notifications</button>  
+        <Link to="/tutor/bookings" className={styles.admission}><i className="fa-solid fa-list-ul"></i>  View Students Registered</Link>  
         
      
       <button className={styles.menu} onClick={handleMoblist}><i className="fa-solid fa-bars"></i></button>
       <div className={styles.mobList} style={{left:showMoblist?"0":"-100vw"}}>
         <ul>
-                <li><Link >Home</Link></li>
-                <li onClick={handleSublist}><Link >Courses</Link><button>{showlist ? <i className="fa-solid fa-caret-up"></i> : <i className="fa-solid fa-caret-down"></i>}</button>
+                <li><Link to="/tutor/">Home</Link></li>
+                <li><Link >Courses</Link> 
                 </li>
-                <ul className={styles.sublist} style={{display:showlist?"block":"none"}}>
-                    <li><Link >Course 1</Link></li>
-                    <li><Link >Course 2</Link></li>
-                    <li><Link >Course 3</Link></li>
-                    <li><Link >Course 4</Link></li>
-                </ul>
-                <li><Link >Blogs</Link></li>
+                <li><Link to="/tutor/blog">Blogs</Link></li>
                 {loggedIn?
-                    <li><Link >Logout</Link></li>
+                    <li><Link to="/tutor/login">Logout</Link></li>
                     :
                     <>
                       <li onClick={handleLoginList}><Link >Login</Link><button>{loginList ? <i className="fa-solid fa-caret-up"></i> : <i className="fa-solid fa-caret-down"></i>}</button>

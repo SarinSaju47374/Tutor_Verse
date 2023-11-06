@@ -5,6 +5,7 @@ import axios from "../../axios"
 import { useState } from "react"
 import TutorNavbar from '../Tutor/TutorNavbar';
 import Footer from '../Student/Footer';
+import TutorFooter from "./TutorFooter";
 
 const TutorPrivateRoutes = () => {
   let data = useSelector(state => state.tutor.user?.id);
@@ -49,7 +50,7 @@ const TutorPrivateRoutes = () => {
     <>
       <TutorNavbar loggedIn={true} />
       <Outlet />
-      <Footer />
+      <TutorFooter />
     </>
   );
 

@@ -7,6 +7,10 @@
     // background-color: red;
     display: grid;
     grid-template-columns: repeat(2,20rem);
+    @media screen and (max-width:"768px") {
+        grid-template-columns: repeat(1,20rem);
+        margin-bottom: 30rem;
+    }
     height: 50vh;
     justify-content: center;
     align-items: center;

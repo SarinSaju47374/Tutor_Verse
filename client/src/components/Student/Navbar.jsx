@@ -75,7 +75,7 @@ function Navbar({loggedIn}) {
 
   return (
     <nav className={styles.userNav}>
-      <div className={styles.logo}><img src="/images/tutorverse cyan logo.png" alt="" /></div>
+      <Link className={styles.logo}><img src="/images/tutorverse cyan logo.png" alt="" /></Link>
       <div className={styles.list}>
         <ul>
             <li><Link >Home</Link></li>

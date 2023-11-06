@@ -521,7 +521,7 @@ const handleProfileForm = () => {
             <TutorSlotSelector formik2={formik3} setOpenSlotSelect={setOpenSlotUpdate}/>
       }
       <div className="content">
-        <div className="det">
+        <div className="dettss">
           <div className="profile-image">
             <img src={data?.profilePhoto || "https://img.freepik.com/premium-vector/avatars-default-photo-placeholder-multiracial-profile-pictures_116137-1820.jpg"} alt="" />
           
