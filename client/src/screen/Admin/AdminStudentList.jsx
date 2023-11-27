@@ -237,10 +237,14 @@ function AdminStudentList() {
       <div className="info">
         <h1>Students</h1>
       </div>
-      <div className="dataTable" style={{overflowX:"scroll",width:"80%"}}>
+      <div className="dataTable" style={{overflowX:"scroll",width:"80%"}} >
         {!show ? Object.keys(data).length === 0 ? "No Data Added" : <DataTableStudent columns={studentColumns} data={data} actions={studentActions} show={show} setShow={setShow}/*hiddenRows={hiddenRows}*/ setBookings={setBookings}/>
         :
-         bookings.booking.length === 0 ? "No Bookings Listed to this Student" : <DataTableStudentBooking columns={bookingColumns} data={bookings}  bookingActions={bookingActions}  />
+         bookings.booking.length === 0 ? 
+         <div>
+          <div className="vamos" style={{position:"fixed",left:"50%",border:"2px solid white",padding:"8px",borderRadius:"8px",cursor:"pointer"}} onClick={()=>setShow(false)}>Close</div>
+          No Data Added 
+         </div> : <DataTableStudentBooking columns={bookingColumns} data={bookings}  bookingActions={bookingActions}  setShow={setShow}/>
         }
       </div>
     </div>

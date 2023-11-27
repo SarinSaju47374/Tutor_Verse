@@ -18,7 +18,7 @@ const adminSchema = new mongoose.Schema({
         type: String, 
         required: true 
     },
-    profilePhoto: { type: String, default: ''}
+    profilePhoto: { type: String, default: 'https://res.cloudinary.com/dn5btexrs/image/upload/v1695185754/cld-sample.jpg'}
 })
 
 export const adminModel = mongoose.model("admin",adminSchema);

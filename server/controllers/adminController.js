@@ -142,6 +142,86 @@ export async function adminTutorView(req, res) {
 }
 
 /**
+ * @route   POST /api/block-tutor
+ * @desc    Blocks the tutor
+ * @access  Private
+*/
+export async function blockTutor(req, res) {
+    let { id } = req.body;
+    console.log({id})
+    try {
+         let tutor = await tutorModel.findOne({_id:id});
+         if(tutor){
+             tutor.isBlocked = true;
+             await tutor.save();
+             console.log({tutor})
+         }else{
+            console.log("THere is no such user")
+         }
+         return res.status(200).send({message:"The tutor is blocked"})
+
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send({err})
+    }
+
+}
+/**
+ * @route   POST /api/unblock-tutor
+ * @desc    unBlocks the tutor
+ * @access  Private
+*/
+export async function unblockTutor(req, res) {
+    let { id } = req.body;
+    try {
+         let tutor = await tutorModel.findOne({_id:id});
+         tutor.isBlocked = false;
+         await tutor.save();
+         return res.status(200).send({message:"The tutor is unblocked"})
+
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send({err})
+    }
+
+}
+
+/**
+ * @route   GET /api/tutor-schedule
+ * @desc    get tutors schedule
+ * @access  Private
+*/
+export async function getTutorSchedule(req, res) {
+    let { id } = req.query;
+    try {
+         let tutor = await tutorModel.findOne({_id:id}).populate("schedule.courseId").select("fName lName schedule");
+         console.log(tutor)
+         return res.status(200).send({schedule:tutor.schedule})
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send({err})
+    }
+
+}
+/**
+ * @route   GET /api/get-admin-data
+ * @desc    get admins data
+ * @access  Private
+*/
+export async function getAdminData(req, res) {
+    let { id } = req.payload;
+    try {
+       let admin = await adminModel.findOne({_id:id}).select("fName lName profilePhoto")
+       if(admin) return res.status(200).send({admin})
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send({err})
+    }
+
+}
+
+
+/**
  * @route   GET /api/admin-student-view
  * @desc    queries the Students data from the Db
  * @access  Private

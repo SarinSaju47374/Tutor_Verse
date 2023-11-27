@@ -68,8 +68,9 @@ function DataTableStudentBooking({ columns, data, actions, hiddenRows, modified,
   
     return (
         <>
+            <div className="vamos" style={{position:"fixed",left:"50%",border:"2px solid white",padding:"8px",borderRadius:"8px",cursor:"pointer"}} onClick={()=>setShow(false)}>Close</div>
             <GlobalFilter filter={state.globalFilter} setFilter={setGlobalFilter} />
-            <table {...getTableProps()}>
+            <table {...getTableProps()} style={{marginTop:"3rem"}}>
                 <thead>
                     {
                         headerGroups.map((headerGroup, index) => (

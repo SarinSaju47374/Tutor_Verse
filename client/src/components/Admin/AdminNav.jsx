@@ -1,18 +1,30 @@
+import {useEffect,useState} from "react";
+import axios from "../../axios"
 import "../../scss/components/Admin/AdminNav.scss"
 function AdminNav() {
+  const [admin,setAdmin] = useState({});
+  useEffect(()=>{
+    async function run(){
+      try{
+        let response = await axios.get("/get-admin-data");
+        if(response.data.admin){
+          setAdmin(response.data.admin)
+        }
+      }catch(err){
+        console.log(err)
+      }
+    }
+    run()
+  },[])
   return (
     <div className="admin-nav">
       <div className="logo">
         <img src="/images/tutorverse cyan logo.png" alt="" />
       </div>
       <div className="icons">
-          <div className="notifications">
-            <i className="fa-solid fa-bell"></i>
-            <span>2</span>
-          </div>
           <div className="user">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4rsSzLimlQyniEtUV4-1raljzFhS45QBeAw&usqp=CAU" alt="" />
-            <span>Jane</span>
+            <img src={admin.profilePhoto} alt="" />
+            <span>{admin.fName}{" "}{admin.lName}</span>
           </div>
       </div>
     </div>

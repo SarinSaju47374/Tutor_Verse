@@ -4,7 +4,7 @@ import "../../scss/components/Admin/DataTable.scss"
 import GlobalFilter from "./GlobalFilter"
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 import 'react-tooltip/dist/react-tooltip.css'
-function DataTableTutor({ columns, data, actions, hiddenRows, modified, download }) {
+function DataTableTutor({ columns, data, actions, hiddenRows, modified, download ,setPop, setId}) {
     if (data) {
         columns = useMemo(() => columns, [])
         data = data.tutors
@@ -54,11 +54,10 @@ function DataTableTutor({ columns, data, actions, hiddenRows, modified, download
 
         // }, 0);
     }, [pageIndex]);
-    console.log(data)
     return (
         <>
             <GlobalFilter filter={state.globalFilter} setFilter={setGlobalFilter} />
-            <table {...getTableProps()}>
+            <table {...getTableProps()} style={{marginTop:"3rem"}}>
                 <thead>
                     {
                         headerGroups.map((headerGroup, index) => (
@@ -94,8 +93,14 @@ function DataTableTutor({ columns, data, actions, hiddenRows, modified, download
                                                 cell.column.id === "isBlocked" && (row.original.isBlocked ? 'yes' : 'no')
                                             }
                                             {
+                                                cell.column.id === "expYear" && (row.original.expYear ? row.original.expyear : 'Not Mentioned')
+                                            }
+                                            {
                                                 cell.column.id === "view" && (
-                                                    <button style={{ backgroundColor: "aliceBlue", borderRadius: "8px" }} data-tooltip-id="view-sched" data-tooltip-content="View The Schedule">
+                                                    <button style={{ backgroundColor: "aliceBlue", borderRadius: "8px" }} data-tooltip-id="view-sched" data-tooltip-content="View The Schedule" onClick={()=>{
+                                                        setPop(true)
+                                                        setId(row.original._id)
+                                                        }}>
                                                         Check
                                                         <ReactTooltip id="view-sched" />
                                                     </button>
@@ -127,46 +132,29 @@ function DataTableTutor({ columns, data, actions, hiddenRows, modified, download
 
                                                 ))
                                             }
-                                            {cell.column.id === 'actions' ? (
-                                                actions.map((action, index) => {
-
-                                                    if (action.type === 'block') {
-                                                        return (<button
+                                            {
+                                                cell.column.id === 'actions' ? (
+                                                    row.original.isBlocked ? (
+                                                        <button
                                                             key={index}
-                                                            onClick={() => action.handler(
-                                                                row.original._id,
-                                                                row.original.courseName,
-                                                                row.original.grade,
-                                                                row.original.board,
-                                                                row.original.price,
-                                                                row.original.duration,
-                                                                row.original.desc,
-                                                                row.original.image,
-                                                            )}
+                                                            onClick={() => actions[1].handler(row.original._id)}
                                                         >
-                                                            {action.label}
-                                                        </button>)
-                                                    } else if (action.type == 'approve') {
-                                                        return (<button key={index} onClick={() => action.handler(row.original._id)}>
-                                                            {(row.original.isHidden ? (
-                                                                <span>
-                                                                    <i className="fa-solid fa-user-check" data-tooltip-id="approve" data-tooltip-content="Approve The user"></i>
-                                                                    <ReactTooltip id="approve" />
-                                                                </span>
-                                                            ) : (
-                                                                <span>
-                                                                    <i className="fa-solid fa-user-times" data-tooltip-id="disapprove" data-tooltip-content="Disapprove The user"></i>
-                                                                    <ReactTooltip id="disapprove" />
-                                                                </span>
-                                                            ))}
+                                                            {actions[1].label}
+                                                        </button>
+                                                    ) : (
+                                                        <button
+                                                            key={index}
+                                                            onClick={() => actions[0].handler(row.original._id)}
+                                                        >
+                                                            {actions[0].label}
+                                                        </button>
+                                                    )
+                                                ) : (
+                                                    // If not, just render null
+                                                    null
+                                                )
+                                            }
 
-                                                        </button>)
-                                                    }
-                                                })
-                                            ) : (
-                                                // If not, just render the cell value
-                                                null
-                                            )}
 
                                         </td>
                                     ))}

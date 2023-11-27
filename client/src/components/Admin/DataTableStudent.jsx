@@ -68,7 +68,7 @@ function DataTableStudent({ columns, data, actions, hiddenRows, modified, downlo
     return (
         <>    
             <GlobalFilter filter={state.globalFilter} setFilter={setGlobalFilter} />
-            <table {...getTableProps()}>
+            <table {...getTableProps()} style={{marginTop:"3rem"}}>
                 <thead>
                     {
                         headerGroups.map((headerGroup, index) => (

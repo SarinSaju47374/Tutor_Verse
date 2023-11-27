@@ -1,0 +1,46 @@
+.adminTutList{
+    position: relative;
+    .schedule-tut{
+        background-color: rgb(246, 242, 242);
+        border-radius: 12px;;
+        width:100%;
+        // box-sizing: border-box;
+        height:20rem;
+        position: absolute;
+        top:0;
+        right:0;
+        left:0;
+        bottom:0;
+        color:rgb(7, 14, 51);
+        padding:20px;
+        display: flex;
+        flex-direction: column;
+        gap:1rem;
+        overflow-y: scroll;
+        .modal-inf{
+            position: absolute;
+            right:12px;
+            font-size: small;
+            color:rgb(70, 82, 87)
+        }
+        .schedule-courseName{
+            
+        }
+        .schedule-slots{
+            display: flex;
+            gap:1rem;
+
+            .schedule-slot{
+                background-color: rgb(63, 142, 168);
+                color:white;
+                padding:20px;
+                border-radius: 12px;
+            }
+        }
+        .BAM-amigo{
+            font-size: large;
+            text-align: center;
+            margin:auto;
+        }
+    }
+}

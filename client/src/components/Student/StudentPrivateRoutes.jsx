@@ -37,7 +37,7 @@ const StudentPrivateRoutes = () => {
             if(newSocket && data){
               
               console.log("BAM VAM 1")
-              newSocket.emit('joinNotificationRoom', data);
+              newSocket.emit('joinNotificationRoom', data); 
               newSocket.on('notification',(message)=>{
                 console.log("BAM VAM 2")
                 Notification.requestPermission()
